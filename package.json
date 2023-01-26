@@ -2,11 +2,12 @@
   "name": "webpack",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/index/index.js",
+  "main": "./src/battleship/battleship.js",
   "scripts": {
     "buildDev": "webpack --config webpack.dev.js",
     "buildProd": "webpack --config webpack.prod.js",
     "watch": "webpack --watch --config webpack.prod.js",
+    "testWatch": "jest --watch",
     "test": "jest"
   },
   "keywords": [],

@@ -1,10 +1,8 @@
 // Entry point
+
 import css from './styles.css';
+import { printSomething } from './functions.js';
 
-function printSomething() {
-    return 'something';
-}
-
-export {
+export{
     printSomething
 }
