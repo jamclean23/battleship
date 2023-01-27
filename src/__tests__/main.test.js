@@ -123,7 +123,6 @@ describe('Gameboard object:', () => {
             // Test
             board1.placeShip(x + 1, y + 1, length, 'horizontal');
             expect(board1.board[y + 1][x + 1].ship).toBe(false);
-            console.log(board1.board);
         });
 
         test('Prevent vertical ship placement at edges when there is no room', () => {
@@ -164,5 +163,25 @@ describe('Gameboard object:', () => {
             expect(board1.ships.length).toBe(1);
             expect(typeof board1.ships[0]).toBe('object');
         });
+    });
+    describe('shipsSunk()', () => {
+        test('Returns 0 when no ships are sunk', () => {
+            expect(board1.shipsSunk()).toBe(0);
+        });
+
+        test('Returns count of ships sunk', () => {
+            board1.placeShip(2, 2, 2, 'horizontal');
+            board1.placeShip(2, 3, 2, 'horizontal');
+
+            board1.receiveAttack(2, 2);
+            board1.receiveAttack(3, 2);
+
+            expect(board1.shipsSunk()).toBe(1);
+
+            board1.receiveAttack(2, 3);
+            board1.receiveAttack(3, 3);
+
+            expect(board1.shipsSunk()).toBe('ALL');
+        })
     });
 });

@@ -30,6 +30,7 @@ function createBoard () {
         board,
         receiveAttack,
         placeShip,
+        shipsSunk,
         ships: [],
     };
 }
@@ -97,6 +98,13 @@ function receiveAttack (x, y) {
 }
 
 function shipsSunk () {
+    let sunkShipCount = 0;
+    let ships = this.ships;
+    ships.forEach((ship, index) => {
+        if (ship.isSunk()) sunkShipCount++;
+    });
+    if (ships.length === sunkShipCount && ships.length > 0) return 'ALL';
+    return sunkShipCount;
 
 }
 
