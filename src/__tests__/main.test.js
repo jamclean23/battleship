@@ -1,6 +1,7 @@
 import * as Battleship from '../battleship/battleship.js';
 import * as Ship from '../battleship/ship.js';
 import * as GameBoard from '../battleship/gameboard.js';
+import * as Player from '../battleship/player.js';
 
 describe('Jest link test:', () => {
     test('printSomething returns "something"', () => {
@@ -183,5 +184,20 @@ describe('Gameboard object:', () => {
 
             expect(board1.shipsSunk()).toBe('ALL');
         })
+    });
+});
+
+describe('Player object:', () => {
+    test('Player object created correctly', () => {
+        const player1 = Player.createPlayer('player');
+        expect(player1).toStrictEqual({
+            isTurn: false,
+            type: 'player'
+        });
+        const player2 = Player.createPlayer('ai');
+        expect(player2).toStrictEqual({
+            isTurn: false,
+            type: 'ai'
+        });
     });
 });
