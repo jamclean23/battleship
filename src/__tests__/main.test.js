@@ -8,7 +8,6 @@ describe('Jest link test:', () => {
     });
 });
 
-
 describe('Ship object:', () => {
 
     const ship = Ship.createShip(3);
@@ -45,11 +44,15 @@ describe('Ship object:', () => {
 });
 
 describe('Gameboard object:', () => {
-    const board1 = GameBoard.createBoard();
+
+    let board1 = GameBoard.createBoard();
+    beforeEach(() => {
+        board1 = GameBoard.createBoard();
+    });
 
     test('Board dimensions are correct', () => {
-        expect(board1.board.length).toBe(7);
-        expect(board1.board[0].length).toBe(7);
+        expect(board1.board.length).toBe(10);
+        expect(board1.board[0].length).toBe(10);
     });
 
     test('Nodes are created correctly', () => {
@@ -63,6 +66,22 @@ describe('Gameboard object:', () => {
             expect(board1.board[0][0].attacked).toBe(true);
             board1.board[0][0].attacked = false;
         });
+
+        test('Attacking a node with a ship adds a hit', () => {
+            board1.placeShip(2, 2, 3, 'horizontal');
+            expect(typeof board1.board[2][2].ship).toBe('object');
+            board1.receiveAttack(2, 2);
+            expect(board1.ships[0].totalHits).toBe(1);
+        });
+
+        test('Attacking a node that has already been attacked returns false', () => {
+            board1.receiveAttack(2, 2);
+            expect(board1.receiveAttack(2, 2)).toBe(false);
+        });
+
+        test('Attacking an off grid node returns false', () => {
+            expect(board1.receiveAttack(-3, 3)).toBe(false);
+        })
     });
 
 
@@ -84,6 +103,66 @@ describe('Gameboard object:', () => {
             expect(typeof board1.board[y + 1][x].ship).toBe('object');
             expect(typeof board1.board[y + 2][x].ship).toBe('object');
         });
-    });
 
+        test('Prevent overlapping ships', () => {
+            let x = 3;
+            let y = 4;
+            board1.placeShip(x, y, 3, 'horizontal');
+            board1.placeShip(x, y, 3, 'vertical');
+            expect(typeof board1.board[y][x].ship).toBe('object');
+            expect(board1.board[y + 1][x].ship).toBe(false);
+        });
+
+        test('Prevent horizontal ship placement at edges when there is no room', () => {
+            let x = 7;
+            let y = 0;
+            let length = 3;
+            // Control
+            board1.placeShip(x, y, length, 'horizontal');
+            expect(typeof board1.board[y][x].ship).toBe('object');
+            // Test
+            board1.placeShip(x + 1, y + 1, length, 'horizontal');
+            expect(board1.board[y + 1][x + 1].ship).toBe(false);
+            console.log(board1.board);
+        });
+
+        test('Prevent vertical ship placement at edges when there is no room', () => {
+            let x = 0;
+            let y = 7;
+            let length = 3;
+            // Control
+            board1.placeShip(x, y, length, 'vertical');
+            expect(typeof board1.board[y][x].ship).toBe('object');
+            // Test
+            board1.placeShip(x + 1, y + 1, length, 'vertical');
+            expect(board1.board[y + 1][x + 1].ship).toBe(false);
+        });
+
+        test('Prevent horizontal placement off the grid', () => {
+            let x = -1;
+            let y = 4;
+            let length = 3;
+            board1.placeShip(x, y, length, 'horizontal');
+            expect(board1.board[y][0].ship).toBe(false);
+        });
+
+        test('Prevent vertical placement off the grid', () => {
+            let x = 0;
+            let y = -2;
+            let length = 4;
+            board1.placeShip(x, y, length, 'vertical');
+            expect(board1.board[0][x].ship).toBe(false);
+        });
+
+        test('Gameboard.ships is an array', () => {
+            board1.placeShip(2, 2, 3, 'horizontal');
+            expect(Array.isArray(board1.ships)).toBe(true);
+        });
+
+        test('Ships are added to the ships array attached to Gameboard object', () => {
+            board1.placeShip(2, 2, 3, 'horizontal');
+            expect(board1.ships.length).toBe(1);
+            expect(typeof board1.ships[0]).toBe('object');
+        });
+    });
 });

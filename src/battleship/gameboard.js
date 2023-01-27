@@ -9,9 +9,9 @@ function createBoard () {
     function populateBoard () {
         let board = [];
 
-        for (let i = 0; i < 7; i ++) {
+        for (let i = 0; i < 10; i ++) {
             let row = [];
-            for (let h = 0; h < 7; h++) {
+            for (let h = 0; h < 10; h++) {
                 row.push(createNode());
             }
             board.push(row);
@@ -22,30 +22,26 @@ function createBoard () {
     function createNode () {
         return {
             ship: false,
-            attacked: false
-
+            attacked: false,
         };
     }
 
     return {
         board,
         receiveAttack,
-        placeShip
+        placeShip,
+        ships: [],
     };
 }
 
-function placeShip (x, y, length, orientation) {
+function placeShip (x, y, length = 'horizontal', orientation) {
     // Check if the current node is valid
     if (checkIfValid(x, y, this.board)){
-        console.log('Origin coordinates valid');
         // Check if orientation has been specified
         if (orientation === 'horizontal' || orientation === 'vertical') {
-            console.log('orientation has been specified: ' + orientation);
             // Check that there is room for the placement
             if (checkIfRoom(x, y, length, orientation, this.board)) {
-                console.log('There is enough room');
-                commitPlacement(x, y, length, orientation, this.board);
-                console.log(this.board);
+                commitPlacement(x, y, length, orientation, this.board, this);
                 return;
             }
         } else {
@@ -55,10 +51,10 @@ function placeShip (x, y, length, orientation) {
 
     return "invalid"
 
-    function commitPlacement (x, y, length, orientation, board) {
-        console.log('committing placement');
+    function commitPlacement (x, y, length, orientation, board, gameboardObj) {
 
         const newShip = Ship.createShip(length);
+        gameboardObj.ships.push(newShip);        
 
         for (let i = 0; i < length; i++) {
             board[y][x].ship = newShip;
@@ -68,11 +64,9 @@ function placeShip (x, y, length, orientation) {
     }
 
     function checkIfRoom (x, y, length, orientation, board) {
-        console.log('checking for room');
         for (let i = 0; i < length; i ++) {
             if (!(checkIfValid(x, y, board))) {
-                console.log('Not enough room');
-                return 'invalid';
+                return false;
             };
 
             if (orientation === 'horizontal') {
@@ -85,8 +79,8 @@ function placeShip (x, y, length, orientation) {
     }
 
     function checkIfValid (x, y, board) {
-        if (y < 0 || y > 6) return false;
-        if (x < 0 || x > 6) return false;
+        if (y < 0 || y > 9) return false;
+        if (x < 0 || x > 9 ) return false;
         if (board[y][x].ship || board[y][x].attacked) return false;
         return true;
     }
@@ -95,11 +89,20 @@ function placeShip (x, y, length, orientation) {
 
 function receiveAttack (x, y) {
     let node = this.board[y][x];
+
+    if (!isInBounds(x, y) || node.attacked) return false;
+
+    if (node.ship) node.ship.totalHits++;
     node.attacked = true;
 }
 
 function shipsSunk () {
 
+}
+
+function isInBounds (x, y) {
+    if (x < 0 || x > 9 || y < 0 || y > 9) return false;
+    return true;
 }
 
 export {
