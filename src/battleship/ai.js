@@ -49,5 +49,6 @@ function randomCoords (board) {
 }
 
 export {
-    populate
+    populate,
+    attackRandom
 }
