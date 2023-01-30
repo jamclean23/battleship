@@ -3,11 +3,6 @@ import * as Ship from '../battleship/ship.js';
 import * as GameBoard from '../battleship/gameboard.js';
 import * as Player from '../battleship/player.js';
 
-describe('Jest link test:', () => {
-    test('printSomething returns "something"', () => {
-        expect(Battleship.printSomething()).toBe('something');
-    });
-});
 
 describe('Ship object:', () => {
 
