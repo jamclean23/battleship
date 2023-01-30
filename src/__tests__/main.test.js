@@ -2,6 +2,7 @@ import * as Battleship from '../battleship/battleship.js';
 import * as Ship from '../battleship/ship.js';
 import * as GameBoard from '../battleship/gameboard.js';
 import * as Player from '../battleship/player.js';
+import * as Game from '../battleship/game.js';
 
 
 describe('Ship object:', () => {
@@ -193,6 +194,29 @@ describe('Player object:', () => {
         expect(player2).toStrictEqual({
             isTurn: false,
             type: 'ai'
+        });
+    });
+});
+
+describe('Game object:', () => {
+    let newGame;
+
+    beforeEach(() => {
+        newGame = Game.initialize('player', 'ai');
+    });
+
+    describe('Object Creation', () => {
+        test('Player objects created', () => {
+            expect(newGame.players).toStrictEqual([
+                {
+                    isTurn: false,
+                    type: 'player'
+                },
+                {
+                    isTurn: false,
+                    type: 'ai'
+                }
+            ]);
         });
     });
 });
