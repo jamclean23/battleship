@@ -3,6 +3,7 @@ import * as Ship from '../battleship/ship.js';
 import * as GameBoard from '../battleship/gameboard.js';
 import * as Player from '../battleship/player.js';
 import * as Game from '../battleship/game.js';
+import * as Ai from '../battleship/ai.js';
 
 
 describe('Ship object:', () => {
@@ -56,6 +57,31 @@ describe('Gameboard object:', () => {
         expect(board1.board[0][0].ship).toBe(false);
         expect(board1.board[6][6].attacked).toBe(false);
     })
+
+    test('List of placeable ships is created correctly', () => {
+        expect(board1.shipsList).toStrictEqual([
+            {
+                name: 'Carrier',
+                length: 5
+            },
+            {
+                name: 'Battleship',
+                length: 4
+            },
+            {
+                name: 'Destroyer',
+                length: 3
+            },
+            {
+                name: 'Submarine',
+                length: 3
+            },
+            {
+                name: 'Patrol Boat',
+                length: 2
+            }
+        ]);
+    });
 
     describe('receiveAttack()', () => {
         test('Attacking a node marks it as attacked', () => {
@@ -229,7 +255,22 @@ describe('Game object:', () => {
         test('Players are each assigned their own board', () => {
             expect(newGame.players[0].board).toBe(newGame.boards[0]);
             expect(newGame.players[1].board).toBe(newGame.boards[1]);
-
         });
+    });
+});
+
+describe('Ai:', () => {
+    test('Test if gameboards are being populated with random ships', () => {
+        let game2 = Game.initialize('player', 'ai');
+        game2.Ai.populate(game2.boards[0]);
+        let nodeOccupied = false;
+        game2.boards[0].board.forEach((row) => {
+            row.forEach((node) => {
+                if (typeof node.ship === 'object') {
+                    nodeOccupied = true;
+                }
+            });
+        });
+        expect(nodeOccupied).toBe(true);
     });
 });

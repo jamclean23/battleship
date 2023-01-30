@@ -6,6 +6,29 @@ function createBoard () {
 
     let board = populateBoard();
 
+    let shipsList = [
+        {
+            name: 'Carrier',
+            length: 5
+        },
+        {
+            name: 'Battleship',
+            length: 4
+        },
+        {
+            name: 'Destroyer',
+            length: 3
+        },
+        {
+            name: 'Submarine',
+            length: 3
+        },
+        {
+            name: 'Patrol Boat',
+            length: 2
+        }
+    ];
+
     function populateBoard () {
         let board = [];
 
@@ -32,10 +55,11 @@ function createBoard () {
         placeShip,
         shipsSunk,
         ships: [],
+        shipsList
     };
 }
 
-function placeShip (x, y, length = 'horizontal', orientation) {
+function placeShip (x, y, length, orientation = 'horizontal') {
     // Check if the current node is valid
     if (checkIfValid(x, y, this.board)){
         // Check if orientation has been specified
@@ -43,7 +67,7 @@ function placeShip (x, y, length = 'horizontal', orientation) {
             // Check that there is room for the placement
             if (checkIfRoom(x, y, length, orientation, this.board)) {
                 commitPlacement(x, y, length, orientation, this.board, this);
-                return;
+                return 'valid';
             }
         } else {
             throw new Error('Orientation not specified');
@@ -93,8 +117,14 @@ function receiveAttack (x, y) {
 
     if (!isInBounds(x, y) || node.attacked) return false;
 
-    if (node.ship) node.ship.totalHits++;
     node.attacked = true;
+
+    if (node.ship){
+        node.ship.totalHits++;
+        return 'hit';
+    } else {
+        return 'miss';
+    }
 }
 
 function shipsSunk () {

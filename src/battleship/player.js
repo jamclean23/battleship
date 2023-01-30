@@ -9,7 +9,7 @@ function createPlayer (type = player) {
     return {
         isTurn: false,
         type,
-        board
+        board,
     }
 }
 

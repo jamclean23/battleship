@@ -1,5 +1,6 @@
 import * as Player from './player.js';
 import * as Gameboard from './gameboard.js';
+import * as Ai from './ai.js';
 
 function initialize (player1 = 'player', player2 = 'player') {
 
@@ -25,9 +26,11 @@ function initialize (player1 = 'player', player2 = 'player') {
     return {
         players,
         boards,
+        Ai
     };
 }
 
 export {
-    initialize
+    initialize,
+    Ai
 };
