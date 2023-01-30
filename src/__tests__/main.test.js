@@ -210,16 +210,26 @@ describe('Game object:', () => {
     describe('Object Creation', () => {
         test('Player objects created', () => {
             expect(newGame.players).toStrictEqual([
-                Player.createPlayer('player'),
-                Player.createPlayer('ai')
+                {...Player.createPlayer('player'),
+                    board: GameBoard.createBoard()
+                },
+                {...Player.createPlayer('ai'),
+                    board: GameBoard.createBoard()
+                }
             ]);
         });
 
-        test.skip('Gameboard objects created', () => {
+        test('Gameboard objects created', () => {
             expect(newGame.boards).toStrictEqual([
                 GameBoard.createBoard(),
                 GameBoard.createBoard()
             ]);
+        });
+
+        test('Players are each assigned their own board', () => {
+            expect(newGame.players[0].board).toBe(newGame.boards[0]);
+            expect(newGame.players[1].board).toBe(newGame.boards[1]);
+
         });
     });
 });
