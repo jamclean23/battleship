@@ -187,13 +187,15 @@ describe('Player object:', () => {
     test('Player object created correctly', () => {
         const player1 = Player.createPlayer('player');
         expect(player1).toStrictEqual({
+            board: undefined,
             isTurn: false,
             type: 'player'
         });
         const player2 = Player.createPlayer('ai');
         expect(player2).toStrictEqual({
+            board: undefined,
             isTurn: false,
-            type: 'ai'
+            type: 'ai',
         });
     });
 });
@@ -208,14 +210,15 @@ describe('Game object:', () => {
     describe('Object Creation', () => {
         test('Player objects created', () => {
             expect(newGame.players).toStrictEqual([
-                {
-                    isTurn: false,
-                    type: 'player'
-                },
-                {
-                    isTurn: false,
-                    type: 'ai'
-                }
+                Player.createPlayer('player'),
+                Player.createPlayer('ai')
+            ]);
+        });
+
+        test.skip('Gameboard objects created', () => {
+            expect(newGame.boards).toStrictEqual([
+                GameBoard.createBoard(),
+                GameBoard.createBoard()
             ]);
         });
     });
