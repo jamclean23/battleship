@@ -1,6 +1,6 @@
 // Functions for creation and management of player objects
 
-function createPlayer (type = player) {
+function createPlayer (type = 'player') {
 
     if (!(type === 'ai')) type = 'player';
 
@@ -11,18 +11,10 @@ function createPlayer (type = player) {
     }
 
     function attackRandom(board) {
-        let keepGoing = true;
-        while (keepGoing === true) {
+        let attack;
+        while (!attack) {
             let grid = randomCoords(board);
-            let attack = board.receiveAttack(grid.x, grid.y);
-            if (attack != false) {
-                keepGoing = false;
-                if (attack === 'hit') {
-                    console.log('Hit!');
-                } else if (attack === 'miss') {
-                    console.log('Missed!');
-                }
-            }
+            attack = board.receiveAttack(grid.x, grid.y);
         }
     }
 
@@ -31,14 +23,16 @@ function createPlayer (type = player) {
             isTurn: false,
             type,
             board,
-            attack
+            attack,
+            name: 'Player'
         }  
     } else if (type === 'ai') {
         return {
             isTurn: false,
             type,
             board,  
-            attackRandom  
+            attackRandom,
+            name: 'Ai'  
         }
     }
 }

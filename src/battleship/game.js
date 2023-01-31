@@ -26,11 +26,23 @@ function initialize (player1 = 'player', player2 = 'player') {
     return {
         players,
         boards,
-        Ai
+        Ai,
+        testWinner
     };
+}
+
+function testWinner () {
+    const boards = this.boards;
+
+    let winner = false;
+    boards.forEach((board, index) => {
+        if (board.shipsSunk() === 'ALL') {
+            winner = this.players[1 - index];
+        }
+    });
+    return winner;
 }
 
 export {
     initialize,
-    Ai
 };

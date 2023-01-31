@@ -225,11 +225,13 @@ describe('Player object:', () => {
         expect(player1.isTurn).toBeFalsy();
         expect(player1.type).toBe('player');
         expect(typeof player1.attack).toBe('function');
+        expect(player1.name).toBe('Player');
 
         expect(aiPlayer.board).toBeUndefined();
         expect(aiPlayer.isTurn).toBeFalsy();
         expect(aiPlayer.type).toBe('ai');
         expect(typeof aiPlayer.attackRandom).toBe('function');
+        expect(aiPlayer.name).toBe('Ai');
     });
 
     test('Player attack on an empty square marks it as attacked', () => {
@@ -286,6 +288,26 @@ describe('Game object:', () => {
             expect(newGame.players[0].board).toBe(newGame.boards[0]);
             expect(newGame.players[1].board).toBe(newGame.boards[1]);
         });
+    });
+
+    describe('Methods:', () => {
+        describe('testWinner():', () => {
+            test('testWinner() determines a winner', () => {
+                // Check for winner when player's ships are sunk
+                newGame.boards[0].shipsSunk = () => 'ALL';
+                expect(newGame.testWinner().name).toBe('Ai');
+                
+                // Reset board
+                newGame = Game.initialize();
+
+                // Check for winner when ai's ships are sunk
+                newGame.boards[1].shipsSunk = () => 'ALL';
+                expect(newGame.testWinner().name).toBe('Player');
+            });
+
+
+        });
+
     });
 });
 
