@@ -210,20 +210,46 @@ describe('Gameboard object:', () => {
 });
 
 describe('Player object:', () => {
-    test('Player object created correctly', () => {
-        const player1 = Player.createPlayer('player');
-        expect(player1).toStrictEqual({
-            board: undefined,
-            isTurn: false,
-            type: 'player'
-        });
-        const player2 = Player.createPlayer('ai');
-        expect(player2).toStrictEqual({
-            board: undefined,
-            isTurn: false,
-            type: 'ai',
-        });
+    let board1;
+    // Clear board before each test
+    beforeEach(() => {
+        board1 = GameBoard.createBoard();
     });
+
+    test('Player object created correctly', () => {
+
+        const player1 = Player.createPlayer('player');
+        expect(player1.board).toBeUndefined();
+        expect(player1.isTurn).toBeFalsy();
+        expect(player1.type).toBe('player');
+        expect(typeof player1.attack).toBe('function');
+
+        const player2 = Player.createPlayer('ai');
+        expect(player2.board).toBeUndefined();
+        expect(player2.isTurn).toBeFalsy();
+        expect(player2.type).toBe('ai');
+        expect(typeof player2.attackRandom).toBe('function');
+    });
+
+    test('Attacking a square marks it as attacked', () => {
+        const player1 = Player.createPlayer('player');
+        player1.attack(board1, 3, 3);
+        expect(board1.board[3][3].attacked).toBe(true);    
+    });
+
+    test('Ai attack on random square marks it as attacked', () => {
+        const aiPlayer = Player.createPlayer('ai');
+        aiPlayer.attackRandom(board1);
+        let nodeAttacked = false;
+        board1.board.forEach((column, index) => {
+            column.forEach((node, index) => {
+                if (node.attacked === true) {
+                    nodeAttacked = true;
+                }
+            });
+        });
+        expect(nodeAttacked).toBe(true);
+    })
 });
 
 describe('Game object:', () => {
@@ -234,16 +260,6 @@ describe('Game object:', () => {
     });
 
     describe('Object Creation', () => {
-        test('Player objects created', () => {
-            expect(newGame.players).toStrictEqual([
-                {...Player.createPlayer('player'),
-                    board: GameBoard.createBoard()
-                },
-                {...Player.createPlayer('ai'),
-                    board: GameBoard.createBoard()
-                }
-            ]);
-        });
 
         test('Gameboard objects created', () => {
             expect(newGame.boards).toStrictEqual([

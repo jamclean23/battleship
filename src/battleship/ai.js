@@ -12,22 +12,6 @@ function populate (board) {
 
 }
 
-function attackRandom(board) {
-    let keepGoing = true;
-    while (keepGoing === true) {
-        let grid = randomCoords(board);
-        let attack = board.receiveAttack(grid.x, grid.y);
-        if (attack != false) {
-            keepGoing = false;
-            if (attack === 'hit') {
-                console.log('Hit!');
-            } else if (attack === 'miss') {
-                console.log('Missed!');
-            }
-        }
-    }
-}
-
 function randomOrientation () {
     let integer = Math.floor(Math.random() * 10);
     if (integer > 5) {
@@ -50,5 +34,4 @@ function randomCoords (board) {
 
 export {
     populate,
-    attackRandom
 }
