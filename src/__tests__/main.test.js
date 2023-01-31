@@ -211,6 +211,9 @@ describe('Gameboard object:', () => {
 
 describe('Player object:', () => {
     let board1;
+    let player1 = Player.createPlayer('player');
+    let aiPlayer = Player.createPlayer('ai');
+
     // Clear board before each test
     beforeEach(() => {
         board1 = GameBoard.createBoard();
@@ -218,31 +221,41 @@ describe('Player object:', () => {
 
     test('Player object created correctly', () => {
 
-        const player1 = Player.createPlayer('player');
         expect(player1.board).toBeUndefined();
         expect(player1.isTurn).toBeFalsy();
         expect(player1.type).toBe('player');
         expect(typeof player1.attack).toBe('function');
 
-        const player2 = Player.createPlayer('ai');
-        expect(player2.board).toBeUndefined();
-        expect(player2.isTurn).toBeFalsy();
-        expect(player2.type).toBe('ai');
-        expect(typeof player2.attackRandom).toBe('function');
+        expect(aiPlayer.board).toBeUndefined();
+        expect(aiPlayer.isTurn).toBeFalsy();
+        expect(aiPlayer.type).toBe('ai');
+        expect(typeof aiPlayer.attackRandom).toBe('function');
     });
 
-    test('Attacking a square marks it as attacked', () => {
-        const player1 = Player.createPlayer('player');
+    test('Player attack on an empty square marks it as attacked', () => {
         player1.attack(board1, 3, 3);
         expect(board1.board[3][3].attacked).toBe(true);    
     });
 
+    test('Player attack on an attacked square returns false', () => {
+        player1.attack(board1, 3, 3);
+        expect(player1.attack(board1, 3, 3)).toBeFalsy();
+    });
+
+    test('Player attack on an occupied square returns "hit"', () => {
+        board1.placeShip(3, 3, 3);
+        expect(player1.attack(board1, 3, 3)).toBe('hit');
+    })
+
+    test('Player attack on an empty square returns "miss"', () => {
+        expect(player1.attack(board1, 3, 3)).toBe('miss');
+    })
+
     test('Ai attack on random square marks it as attacked', () => {
-        const aiPlayer = Player.createPlayer('ai');
         aiPlayer.attackRandom(board1);
         let nodeAttacked = false;
-        board1.board.forEach((column, index) => {
-            column.forEach((node, index) => {
+        board1.board.forEach((column) => {
+            column.forEach((node) => { 
                 if (node.attacked === true) {
                     nodeAttacked = true;
                 }
@@ -250,6 +263,7 @@ describe('Player object:', () => {
         });
         expect(nodeAttacked).toBe(true);
     })
+
 });
 
 describe('Game object:', () => {

@@ -7,7 +7,7 @@ function createPlayer (type = player) {
     let board;
 
     function attack (board, x, y) {
-        let attempt = board.receiveAttack();
+        return board.receiveAttack(x, y);
     }
 
     function attackRandom(board) {
