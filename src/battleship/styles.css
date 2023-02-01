@@ -30,6 +30,9 @@ main {
     border: 2px solid #000000;
     height: 45vh;
     width: 45vh;
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+    grid-template-rows: repeat(11, 1fr);
 }
 
 .player1.theirs {
@@ -46,4 +49,10 @@ main {
 
 .player2.own {
     grid-area: player2Own;
+}
+
+.gridSquare {
+    display: grid;
+    justify-items: center;
+    align-items: center;
 }

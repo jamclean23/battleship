@@ -1,6 +1,7 @@
 import * as Player from './player.js';
 import * as Gameboard from './gameboard.js';
 import * as Ai from './ai.js';
+import * as Dom from './dom-manipulation.js';
 
 function initialize (player1 = 'player', player2 = 'player') {
 
@@ -22,7 +23,7 @@ function initialize (player1 = 'player', player2 = 'player') {
     });
 
     // Main game loop
-    function mainLoop () {
+    async function mainLoop () {
 
         // Populate game boards
         this.boards.forEach((board, index) => {
