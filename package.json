@@ -6,7 +6,7 @@
   "scripts": {
     "buildDev": "webpack --config webpack.dev.js",
     "buildProd": "webpack --config webpack.prod.js",
-    "watch": "webpack --watch --config webpack.prod.js",
+    "watch": "webpack --watch --config webpack.dev.js",
     "testWatch": "jest --watch",
     "test": "jest"
   },

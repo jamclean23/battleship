@@ -5,7 +5,6 @@ import * as Ai from './ai.js';
 function initialize (player1 = 'player', player2 = 'player') {
 
     // Initialize game boards
-
     const boards = [];
 
     for (let i = 0; i < 2; i++) {
@@ -13,7 +12,6 @@ function initialize (player1 = 'player', player2 = 'player') {
     }
 
     // Initialize players
-
     const playerTypes = [player1, player2];
     const players = [];
 
@@ -23,11 +21,46 @@ function initialize (player1 = 'player', player2 = 'player') {
         players.push(newPlayer);
     });
 
+    // Main game loop
+    function mainLoop () {
+
+        // Populate game boards
+        this.boards.forEach((board, index) => {
+            this.Ai.populate(board);
+        });
+
+        // Name players
+        this.players.forEach((player, index) => {
+            player.name = player.name + ' #' + (index + 1);
+        });
+
+        // Take turns attacking until a winner is declared
+
+        let turns = 0;
+        let winner;
+
+        while (!winner) {
+            this.players.forEach((player, index) => {
+                if (player.type === 'ai'){
+                    player.attackRandom(this.boards[1 - index]);
+                }
+            });
+
+            winner = this.testWinner();
+            turns++;
+        }
+
+        console.log(turns + ' turns');
+        console.log('Winner: ' + winner.name);
+
+    }
+
     return {
         players,
         boards,
         Ai,
-        testWinner
+        testWinner,
+        mainLoop
     };
 }
 
