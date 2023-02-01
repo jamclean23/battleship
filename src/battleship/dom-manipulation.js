@@ -99,6 +99,50 @@ function initialize () {
     }
 }
 
+function updateBoards (boards) {
+    // Get player's own boards from the DOM
+    const ownRenderedBoards = document.querySelectorAll('.board.own');
+
+    // Iterate through game squares on the boards
+    ownRenderedBoards.forEach((renderedBoard, index) => {
+        const nodeSquares = renderedBoard.querySelectorAll('.gameSquare');
+        nodeSquares.forEach((square) => {
+            // Assign node to the square's meta
+            square.meta.square = findNode(square.meta.x, square.meta.y, boards[index]);
+
+            // Render meta
+            renderMeta(square); 
+        });
+    });
+
+}
+
+function renderMeta (square) {
+    if (square.meta.square.ship){
+        square.innerText = square.meta.square.ship.name.slice(0, 1); 
+        square.style.backgroundColor = 'gray';
+        square.style.color = 'white';
+    } 
+}
+
+function findNode (x, y, board) {
+    // Search for the node
+    let found = false;
+    board.board.forEach((row, yIndex) => {
+        row.forEach((square, xIndex) => {
+            if (xIndex === +x && yIndex === +y) found = square;
+        });
+    });
+
+    // If it's found then return it
+    if (found) return found;
+
+    // If it isn't then throw an error
+    throw new Error('Node Square mismatch');
+    
+}
+
 export {
-    initialize
+    initialize,
+    updateBoards
 }

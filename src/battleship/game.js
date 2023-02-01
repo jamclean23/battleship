@@ -30,6 +30,9 @@ function initialize (player1 = 'player', player2 = 'player') {
             this.Ai.populate(board);
         });
 
+        // Draw boards
+        Dom.updateBoards(this.boards);
+
         // Name players
         this.players.forEach((player, index) => {
             player.name = player.name + ' #' + (index + 1);

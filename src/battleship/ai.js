@@ -6,7 +6,7 @@ function populate (board) {
         while (keepGoing === 'invalid') {
             let orientation = randomOrientation();
             let grid = randomCoords(board);
-            keepGoing = board.placeShip(grid.x, grid.y, ship.length, orientation);
+            keepGoing = board.placeShip(grid.x, grid.y, ship.length, orientation, ship.name);
         }
     });
 

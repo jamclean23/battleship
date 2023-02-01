@@ -1,4 +1,3 @@
-import * as Battleship from '../battleship/battleship.js';
 import * as Ship from '../battleship/ship.js';
 import * as GameBoard from '../battleship/gameboard.js';
 import * as Player from '../battleship/player.js';
@@ -8,7 +7,11 @@ import * as Ai from '../battleship/ai.js';
 
 describe('Ship object:', () => {
 
-    const ship = Ship.createShip(3);
+    const ship = Ship.createShip(3, 'Destroyer');
+
+    test('Ship object contains name of the ship', () => {
+        expect(ship.name).toBe('Destroyer');
+    });
 
     test('Length property is 3 when given 3', () => {
         expect(ship.length).toBe(3);

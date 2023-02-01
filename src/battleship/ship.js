@@ -1,6 +1,7 @@
 // Functions for creation and management of ship objects
 
-function createShip (length) {
+function createShip (length, name) {
+
     let totalHits = 0;
 
     function hit () {
@@ -19,6 +20,7 @@ function createShip (length) {
         totalHits,
         hit,
         isSunk,
+        name
     }
 }
 

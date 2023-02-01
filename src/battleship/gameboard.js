@@ -59,14 +59,14 @@ function createBoard () {
     };
 }
 
-function placeShip (x, y, length, orientation = 'horizontal') {
+function placeShip (x, y, length, orientation = 'horizontal', name) {
     // Check if the current node is valid
     if (checkIfValid(x, y, this.board)){
         // Check if orientation has been specified
         if (orientation === 'horizontal' || orientation === 'vertical') {
             // Check that there is room for the placement
             if (checkIfRoom(x, y, length, orientation, this.board)) {
-                commitPlacement(x, y, length, orientation, this.board, this);
+                commitPlacement(x, y, length, orientation, this.board, this, name);
                 return 'valid';
             }
         } else {
@@ -76,9 +76,9 @@ function placeShip (x, y, length, orientation = 'horizontal') {
 
     return "invalid"
 
-    function commitPlacement (x, y, length, orientation, board, gameboardObj) {
+    function commitPlacement (x, y, length, orientation, board, gameboardObj, name) {
 
-        const newShip = Ship.createShip(length);
+        const newShip = Ship.createShip(length, name);
         gameboardObj.ships.push(newShip);        
 
         for (let i = 0; i < length; i++) {
