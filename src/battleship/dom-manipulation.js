@@ -130,6 +130,11 @@ function renderMeta (square) {
         square.style.backgroundColor = 'red';
     }
 
+    if (!ship && square.meta.square.attacked) {
+        square.style.backgroundColor = 'blue';
+        square.innerText = 'M';
+    }
+
 }
 
 function findNode (x, y, board) {

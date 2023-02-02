@@ -39,19 +39,14 @@ function initialize (player1 = 'player', player2 = 'player') {
         });
 
         // Start a round
-        playRound(this);
+        playRound(this, 100);
 
-        // test promises
-        logThings();
-
-
-
-        async function playRound (game) {
-            let result = await takeTurns(game);
+        async function playRound (game, aiTimer) {
+            let result = await takeTurns(aiTimer, game);
             console.log(result);
         }
 
-        async function takeTurns (game, winner = false, turns = 0, player = 0) {
+        async function takeTurns (aiTimer = 500, game, winner = false, turns = 0, player = 0) {
             // log progress for testing
             console.log('player: ' + player);
             console.log('turns: ' + turns);
@@ -66,7 +61,6 @@ function initialize (player1 = 'player', player2 = 'player') {
             Dom.updateBoards(game.boards);
 
             // Check for winner and return
-
             winner = game.testWinner();
 
             if (winner) return new Promise((resolve) => {
@@ -76,55 +70,10 @@ function initialize (player1 = 'player', player2 = 'player') {
             // If there's not a winner, set a timer and then recurse
             return await new Promise((resolve) => {
                 setTimeout((resolve) => {
-                    takeTurns(game, winner, ++turns, player = 1 - player);
-                }, 1000);
+                    takeTurns(aiTimer, game, winner, ++turns, player = 1 - player);
+                }, aiTimer);
             });
         };
-
-        // Take turns attacking until a winner is declared
-        // let turns = 0;
-        // let winner;
-
-        // let result = await takeTurns(winner, turns, this);
-        // winner = result.winner;
-        // turns = result.turns;
-
-        // console.log(turns + ' turns');
-        // console.log('Winner: ' + winner.name);
-
-        async function logThings () {
-            let blah = await sayHowdy();
-            sayDo(blah);
-
-            function sayHowdy () {
-                console.log('howdy');
-                return new Promise((resolve) => {
-                    setTimeout(resolve, 1000, 'do!');
-                });
-            }
-
-            function sayDo (message) {
-                console.log(message);
-            }
-        }
-         
-        function syncTakeTurns() {
-            let turns = 0;
-            let winner;
-
-            while (!winner) {
-                this.players.forEach((player, index) => {
-                    if (player.type === 'ai'){
-                        player.attackRandom(this.boards[1 - index]);
-                    }
-                    Dom.updateBoards(this.boards);
-                });
-        
-
-                winner = this.testWinner();
-                turns++;
-            }
-        }
     }
 
     return {
