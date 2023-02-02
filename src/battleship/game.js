@@ -51,8 +51,12 @@ function initialize (player1 = 'player', player2 = 'player') {
             console.log('player turn: ' + (player + 1));
 
             // Ai players make random attacks on the other player's board
-            if (game.players[player].type === 'ai'){
+            if (game.players[player].type === 'ai') {
                 game.players[player].attackRandom(game.boards[1 - player]);
+            // Wait for input if it's a human player
+            } else if (game.players[player].type === 'player') {
+                let coordinates = await getCoordinates();
+                console.log(coordinates);
             }
 
             // Render boards
@@ -74,6 +78,17 @@ function initialize (player1 = 'player', player2 = 'player') {
 
             let result = await recurse();
             return result;
+
+            function getCoordinates () {
+                return new Promise((resolve) => {
+                    const testButton = document.querySelector('.testButton');
+                    testButton.addEventListener('click', handleResolve)
+                    function handleResolve () {
+                        resolve('3,3');
+                        testButton.removeEventListener('click', handleResolve);
+                    }
+                });
+            }
 
             function recurse () {
                 return new Promise((resolve) => {

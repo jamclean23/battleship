@@ -8,6 +8,7 @@ function initialize () {
         'G', 'H', 'I', 'J'
     ];
     boards.forEach((board) => {
+        
         addEmpty(board);
         renderLetters(board);
         renderNumbers(board);
@@ -132,7 +133,6 @@ function renderMeta (square) {
 
     if (!ship && square.meta.square.attacked) {
         square.style.backgroundColor = 'blue';
-        square.innerText = 'M';
     }
 
 }
