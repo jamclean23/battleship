@@ -39,18 +39,16 @@ function initialize (player1 = 'player', player2 = 'player') {
         });
 
         // Start a round
-        playRound(this, 100);
+        playRound(this, 10);
 
         async function playRound (game, aiTimer) {
             let result = await takeTurns(aiTimer, game);
-            console.log(result);
+            console.log(result.winner.name + ' has won in ' + result.turns + ' turns!');
         }
 
         async function takeTurns (aiTimer = 500, game, winner = false, turns = 0, player = 0) {
             // log progress for testing
-            console.log('player: ' + player);
-            console.log('turns: ' + turns);
-            console.log(winner);
+            console.log('player turn: ' + (player + 1));
 
             // Ai players make random attacks on the other player's board
             if (game.players[player].type === 'ai'){
@@ -63,16 +61,27 @@ function initialize (player1 = 'player', player2 = 'player') {
             // Check for winner and return
             winner = game.testWinner();
 
-            if (winner) return new Promise((resolve) => {
-                setTimeout(resolve, 1000, { winner, turns });
-            });
+            if (winner){
+                let result = new Promise((resolve) => {
+                    resolve({ winner, turns });
+                });
 
-            // If there's not a winner, set a timer and then recurse
-            return await new Promise((resolve) => {
-                setTimeout((resolve) => {
-                    takeTurns(aiTimer, game, winner, ++turns, player = 1 - player);
-                }, aiTimer);
-            });
+                return result;
+            } 
+
+            // If there's not a winner,
+            // call recursive function and wait for the result, then return it
+
+            let result = await recurse();
+            return result;
+
+            function recurse () {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve(takeTurns(aiTimer, game, winner, ++turns, player = 1 - player));
+                    }, aiTimer);;
+                });
+            } 
         };
     }
 
