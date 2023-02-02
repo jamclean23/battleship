@@ -55,8 +55,14 @@ function initialize (player1 = 'player', player2 = 'player') {
                 game.players[player].attackRandom(game.boards[1 - player]);
             // Wait for input if it's a human player
             } else if (game.players[player].type === 'player') {
-                let coordinates = await getCoordinates();
-                console.log(coordinates);
+                let coordinates = false;
+
+                while (!coordinates) {
+                    coordinates = await getAttack(game, player);
+                    console.log(coordinates);
+                }
+
+
             }
 
             // Render boards
@@ -75,17 +81,54 @@ function initialize (player1 = 'player', player2 = 'player') {
 
             // If there's not a winner,
             // call recursive function and wait for the result, then return it
-
+            
             let result = await recurse();
             return result;
 
-            function getCoordinates () {
+            function getAttack (game, player) {
                 return new Promise((resolve) => {
+                    // Set up test button
                     const testButton = document.querySelector('.testButton');
+                    const xInput = document.querySelector('#xInput');
+                    const yInput = document.querySelector('#yInput');
+
                     testButton.addEventListener('click', handleResolve)
                     function handleResolve () {
-                        resolve('3,3');
+
+                        // Remove event listener to prevent duplicate calls
                         testButton.removeEventListener('click', handleResolve);
+
+                        // Check if input is valid
+                        if (checkValidInput(xInput.value, yInput.value)){
+
+                            // Attempt an attack
+                            let attempt = game.boards[1 - player].receiveAttack(xInput.value - 1, yInput.value - 1);
+                            
+                            // If the attack succeeds, resolve the return value
+                            if (attempt) {
+                                resolve({ x: xInput.value, y: yInput.value});
+                            
+                            // If the attack fails, resolve false
+                            } else {
+                                console.log('Invalid Placement');
+                                resolve(false);
+                            }
+                        } else {
+                            resolve(false);
+                        }
+                
+
+
+                        function checkValidInput (x, y) {
+                            console.log('x ' + x);
+                            console.log('y ' + y);
+                            if (x > 0 && x < 11 && y > 0 && y < 11) {
+                                return true;
+                            } else {
+                                console.log('out of range');
+                                return false;
+                            }
+                        }
                     }
                 });
             }
