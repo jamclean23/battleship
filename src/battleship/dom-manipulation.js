@@ -118,11 +118,18 @@ function updateBoards (boards) {
 }
 
 function renderMeta (square) {
-    if (square.meta.square.ship){
-        square.innerText = square.meta.square.ship.name.slice(0, 1); 
+    const ship = square.meta.square.ship;
+
+    if (ship) {
+        square.innerText = ship.name.slice(0, 1); 
         square.style.backgroundColor = 'gray';
         square.style.color = 'white';
     } 
+
+    if (ship && square.meta.square.attacked) {
+        square.style.backgroundColor = 'red';
+    }
+
 }
 
 function findNode (x, y, board) {
