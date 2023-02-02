@@ -52,12 +52,14 @@ main {
 }
 
 .board {
-    border: 1px solid black;
-    height: 40vh;
-    width: 40vh;
+    border: 1px solid rgba(0, 0, 0, 0.411);
+    border-radius: 6px;
+    height: 45vh;
+    width: 45vh;
     display: grid;
     grid-template-columns: repeat(11, 1fr);
     grid-template-rows: repeat(11, 1fr);
+    padding: .5rem;
 }
 
 .player1.theirs {
@@ -83,5 +85,6 @@ main {
 }
 
 .gameSquare {
-    border: 1px dotted black;
+    border: 1px solid rgba(0, 0, 0, 0.411);
+    border-radius: 6px;
 }
