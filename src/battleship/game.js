@@ -39,7 +39,7 @@ function initialize (player1 = 'player', player2 = 'player') {
         });
 
         // Start a round
-        playRound(this, 10);
+        playRound(this, 500);
 
         async function playRound (game, aiTimer) {
             let result = await takeTurns(aiTimer, game);

@@ -104,21 +104,55 @@ function updateBoards (boards) {
     // Get player's own boards from the DOM
     const ownRenderedBoards = document.querySelectorAll('.board.own');
 
-    // Iterate through game squares on the boards
+    // Iterate through boards
     ownRenderedBoards.forEach((renderedBoard, index) => {
+        // Get nodelist of all squares on the boards
         const nodeSquares = renderedBoard.querySelectorAll('.gameSquare');
+        // Iterate though them
         nodeSquares.forEach((square) => {
             // Assign node to the square's meta
             square.meta.square = findNode(square.meta.x, square.meta.y, boards[index]);
 
             // Render meta
-            renderMeta(square); 
+            renderOwnMeta(square); 
         });
+    });
+
+    // Get players' 'their' boards from the Dom
+    const theirRenderedBoards = document.querySelectorAll('.board.theirs');
+
+    // Iterate through boards
+    theirRenderedBoards.forEach((renderedBoard, index) => {
+        // Get a nodelist of all the squares on the board
+        const nodeSquares = renderedBoard.querySelectorAll('.gameSquare');
+        // Iterate through them
+        nodeSquares.forEach((square) => {
+            // Assign a node to the square's meta
+            square.meta.square = findNode(square.meta.x, square.meta.y, boards[1 - index]);
+
+            // Render meta
+            renderTheirMeta(square);
+        });
+
     });
 
 }
 
-function renderMeta (square) {
+function renderTheirMeta (square) {
+    const ship = square.meta.square.ship;
+
+    if (ship && square.meta.square.attacked) {
+        square.style.backgroundColor = 'red';
+        square.innerText = ship.name.slice(0, 1); 
+        square.style.color = 'white';
+    }
+
+    if (!ship && square.meta.square.attacked) {
+        square.style.backgroundColor = 'blue';
+    }
+}
+
+function renderOwnMeta (square) {
     const ship = square.meta.square.ship;
 
     if (ship) {
