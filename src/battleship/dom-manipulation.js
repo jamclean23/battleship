@@ -93,7 +93,6 @@ function initialize () {
                 newDiv.style.gridColumn = (newDiv.meta.x + 2) + ' / ' +  (newDiv.meta.x + 3);
                 newDiv.style.gridRow = (newDiv.meta.y + 2) + ' / ' +  (newDiv.meta.y + 3);
 
-                // Add to DOM
                 board.appendChild(newDiv);
             }
         }
@@ -101,7 +100,6 @@ function initialize () {
 }
 
 function updateBoards (boards, players) {
-    console.log(boards);
     // Get player's own boards from the DOM
     const ownRenderedBoards = document.querySelectorAll('.board.own');
 

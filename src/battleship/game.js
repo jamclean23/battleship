@@ -59,7 +59,6 @@ function initialize (player1 = 'player', player2 = 'player') {
                     let player = findWhoseTurn(game);
 
                     if (!player) throw new Error('Game not started');
-    
                     switch(key) {
                         case 'up':
                             player.selected = moveSelection(player.selected, 0, -1);
@@ -76,12 +75,10 @@ function initialize (player1 = 'player', player2 = 'player') {
                         case 'commit':
                             break
                     }
+                    console.log(player.selected);
 
-                    // Render
-                    // Dom.updateBoards(this.boards, this.players);
                     
                     function moveSelection (selected, xChange, yChange) {
-                        console.log(selected);
                         selected.x = selected.x + xChange;
                         selected.y = selected.y + yChange;
 
@@ -128,7 +125,6 @@ function initialize (player1 = 'player', player2 = 'player') {
 
                 while (!coordinates) {
                     coordinates = await getAttack(game, player);
-                    console.log(coordinates);
                 }
 
 
