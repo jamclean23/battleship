@@ -13,6 +13,10 @@ body {
     align-content: center;
 }
 
+.gameSquare.selected {
+    border: 4px solid rgb(8, 241, 8);
+}
+
 .arrowContainer {
     grid-column: 1 /3;
     display: grid;
