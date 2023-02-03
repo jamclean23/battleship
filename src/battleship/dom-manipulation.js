@@ -99,7 +99,10 @@ function initialize () {
     }
 }
 
-function updateBoards (boards, players) {
+function updateBoards (game) {
+
+    let boards = game.boards;
+    let players = game.players;
     // Get player's own boards from the DOM
     const ownRenderedBoards = document.querySelectorAll('.board.own');
 
@@ -132,6 +135,7 @@ function updateBoards (boards, players) {
         nodeSquares.forEach((square) => {
             // Assign a node to the square's meta
             square.meta.square = findNode(square.meta.x, square.meta.y, boards[1 - index]);
+
 
             // Render meta
             renderTheirMeta(square);

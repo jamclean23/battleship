@@ -31,7 +31,7 @@ function initialize (player1 = 'player', player2 = 'player') {
         });
 
         // Draw boards
-        Dom.updateBoards(this.boards, this.players);
+        Dom.updateBoards(this);
 
         // Name players
         this.players.forEach((player, index) => {
@@ -57,6 +57,7 @@ function initialize (player1 = 'player', player2 = 'player') {
                 function handleClick (event) {
                     let key = event.srcElement.id;
                     let player = findWhoseTurn(game);
+                    if(player.type === 'ai') return;
 
                     if (!player) throw new Error('Game not started');
                     switch(key) {
@@ -75,8 +76,10 @@ function initialize (player1 = 'player', player2 = 'player') {
                         case 'commit':
                             break
                     }
+                    console.log('Player selected:');
                     console.log(player.selected);
 
+                    Dom.updateBoards(game);
                     
                     function moveSelection (selected, xChange, yChange) {
                         selected.x = selected.x + xChange;
@@ -131,7 +134,7 @@ function initialize (player1 = 'player', player2 = 'player') {
             }
 
             // Render boards
-            Dom.updateBoards(game.boards, game.players);
+            Dom.updateBoards(game);
 
             // Check for winner and return
             winner = game.testWinner();
