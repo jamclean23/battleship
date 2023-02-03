@@ -24,7 +24,7 @@ function initialize (player1 = 'player', player2 = 'player') {
 
     // Main game loop
     function mainLoop () {
-
+        // SETUP
         // Populate game boards
         this.boards.forEach((board, index) => {
             this.Ai.populate(board);
@@ -38,7 +38,10 @@ function initialize (player1 = 'player', player2 = 'player') {
             player.name = player.name + ' #' + (index + 1);
         });
 
-        // Start a round
+        // Give player 1 the starting turn
+        this.players[0].isTurn = true;
+
+        // LOOP
         playRound(this, 500);
 
         async function playRound (game, aiTimer) {
@@ -71,6 +74,9 @@ function initialize (player1 = 'player', player2 = 'player') {
             // Check for winner and return
             winner = game.testWinner();
 
+            // Toggle player turns
+            toggleTurns(game);
+
             if (winner){
                 let result = new Promise((resolve) => {
                     resolve({ winner, turns });
@@ -85,18 +91,23 @@ function initialize (player1 = 'player', player2 = 'player') {
             let result = await recurse();
             return result;
 
+            function toggleTurns (game) {
+                game.players.forEach((player) => {
+                    player.isTurn ? player.isTurn = false: player.isTurn = true ;
+                });
+            }
             function getAttack (game, player) {
                 return new Promise((resolve) => {
-                    // Set up test button
-                    const testButton = document.querySelector('.testButton');
+                    // Set up commit button
+                    const commitButton = document.querySelector('#commit');
                     const xInput = document.querySelector('#xInput');
                     const yInput = document.querySelector('#yInput');
 
-                    testButton.addEventListener('click', handleResolve)
-                    function handleResolve () {
+                    commitButton.addEventListener('click', handleResolve);
 
+                    function handleResolve () {
                         // Remove event listener to prevent duplicate calls
-                        testButton.removeEventListener('click', handleResolve);
+                        commitButton.removeEventListener('click', handleResolve);
 
                         // Check if input is valid
                         if (checkValidInput(xInput.value, yInput.value)){
