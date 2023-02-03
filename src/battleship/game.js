@@ -161,12 +161,13 @@ function initialize (player1 = 'player', player2 = 'player') {
                     player.isTurn ? player.isTurn = false: player.isTurn = true ;
                 });
             }
-            function getAttack (game, player) {
+            function getAttack (game, playerTurn) {
                 return new Promise((resolve) => {
                     // Set up commit button
                     const commitButton = document.querySelector('#commit');
-                    const xInput = document.querySelector('#xInput');
-                    const yInput = document.querySelector('#yInput');
+                    // Dom.updateInfoBoxes(player.selected.x, player.selected.y);
+                    let player = game.players[playerTurn];
+                    console.log('x: ' + player.selected.x);
 
                     commitButton.addEventListener('click', handleResolve);
 
@@ -175,14 +176,14 @@ function initialize (player1 = 'player', player2 = 'player') {
                         commitButton.removeEventListener('click', handleResolve);
 
                         // Check if input is valid
-                        if (checkValidInput(xInput.value, yInput.value)){
+                        if (checkValidInput(player.selected.x, player.selected.y)){
 
                             // Attempt an attack
-                            let attempt = game.boards[1 - player].receiveAttack(xInput.value - 1, yInput.value - 1);
+                            let attempt = game.boards[1 - playerTurn].receiveAttack(player.selected.x, player.selected.y);
                             
                             // If the attack succeeds, resolve the return value
                             if (attempt) {
-                                resolve({ x: xInput.value, y: yInput.value});
+                                resolve({ x: player.selected.x, y: player.selected.y});
                             
                             // If the attack fails, resolve false
                             } else {
@@ -198,7 +199,7 @@ function initialize (player1 = 'player', player2 = 'player') {
                         function checkValidInput (x, y) {
                             console.log('x ' + x);
                             console.log('y ' + y);
-                            if (x > 0 && x < 11 && y > 0 && y < 11) {
+                            if (x >= 0 && x < 10 && y >= 0 && y < 10) {
                                 return true;
                             } else {
                                 console.log('out of range');
