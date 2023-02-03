@@ -106,12 +106,14 @@ function updateBoards (game) {
     // Get player's own boards from the DOM
     const ownRenderedBoards = document.querySelectorAll('.board.own');
 
-    // Iterate through boards
+    // Iterate through 'own' boards
     ownRenderedBoards.forEach((renderedBoard, index) => {
         // Assign an owner to each board
         renderedBoard.player = players[index];
+
         // Get nodelist of all squares on the boards
         const nodeSquares = renderedBoard.querySelectorAll('.gameSquare');
+
         // Iterate though them
         nodeSquares.forEach((square) => {
             // Assign node to the square's meta
@@ -129,23 +131,25 @@ function updateBoards (game) {
     theirRenderedBoards.forEach((renderedBoard, index) => {
         // Assign an owner to each board
         renderedBoard.player = players[index];
+
         // Get a nodelist of all the squares on the board
         const nodeSquares = renderedBoard.querySelectorAll('.gameSquare');
+
         // Iterate through them
         nodeSquares.forEach((square) => {
+
             // Assign a node to the square's meta
             square.meta.square = findNode(square.meta.x, square.meta.y, boards[1 - index]);
 
-
             // Render meta
-            renderTheirMeta(square);
+            renderTheirMeta(renderedBoard, square);
         });
 
     });
 
 }
 
-function renderTheirMeta (square) {
+function renderTheirMeta (renderedBoard, square) {
     const ship = square.meta.square.ship;
 
     if (ship && square.meta.square.attacked) {
@@ -156,6 +160,14 @@ function renderTheirMeta (square) {
 
     if (!ship && square.meta.square.attacked) {
         square.style.backgroundColor = 'blue';
+    }
+
+    if (renderedBoard.player.isTurn && renderedBoard.player.selected) {
+        if (square.meta.x === renderedBoard.player.selected.x && square.meta.y === renderedBoard.player.selected.y) {
+            square.classList.add('selected');
+        } else {
+            square.classList.remove('selected');
+        }
     }
 }
 
