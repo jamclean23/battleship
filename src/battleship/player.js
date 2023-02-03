@@ -24,7 +24,11 @@ function createPlayer (type = 'player') {
             type,
             board,
             attack,
-            name: 'Player'
+            name: 'Player',
+            selected: {
+                x: 0,
+                y: 0
+            }
         }  
     } else if (type === 'ai') {
         return {

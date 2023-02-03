@@ -229,6 +229,8 @@ describe('Player object:', () => {
         expect(player1.type).toBe('player');
         expect(typeof player1.attack).toBe('function');
         expect(player1.name).toBe('Player');
+        expect(player1.selected.x).toBe(0);
+        expect(player1.selected.y).toBe(0);
 
         expect(aiPlayer.board).toBeUndefined();
         expect(aiPlayer.isTurn).toBeFalsy();
