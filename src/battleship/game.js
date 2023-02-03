@@ -41,8 +41,73 @@ function initialize (player1 = 'player', player2 = 'player') {
         // Give player 1 the starting turn
         this.players[0].isTurn = true;
 
+        setupListeners(this);
+
         // LOOP
         playRound(this, 500);
+
+        function setupListeners (game) {
+            // Get a nodelist of the buttons on the arrow pad
+            const arrows = document.querySelectorAll('.arrow');
+    
+            // Iterate through them
+            arrows.forEach((button) => {
+                button.addEventListener('click', handleClick);
+    
+                function handleClick (event) {
+                    let key = event.srcElement.id;
+                    let player = findWhoseTurn(game);
+
+                    if (!player) throw new Error('Game not started');
+    
+                    switch(key) {
+                        case 'up':
+                            player.selected = moveSelection(player.selected, 0, -1);
+                            break;
+                        case 'down':
+                            player.selected = moveSelection(player.selected, 0, 1);
+                            break;
+                        case 'left':
+                            player.selected = moveSelection(player.selected, -1, 0);
+                            break;
+                        case 'right':
+                            player.selected = moveSelection(player.selected, 1, 0);
+                            break
+                        case 'commit':
+                            break
+                    }
+                    
+                    console.log(player.selected);
+
+                    function moveSelection (selected, xChange, yChange) {
+                        console.log(selected);
+                        selected.x = selected.x + xChange;
+                        selected.y = selected.y + yChange;
+
+                        if (selected.x > 9) selected.x = 9;
+                        if (selected.x < 0) selected.x = 0;
+
+                        if (selected.y > 9) selected.y = 9;
+                        if (selected.y < 0) selected.y = 0;
+
+                        return selected;
+                    }
+                    
+                }
+            });
+    
+        }
+
+        function findWhoseTurn (game) {
+            let result = false;
+            game.players.forEach((player) => {
+                if (player.isTurn){
+                    result = player;
+                }
+            });
+            return result;
+
+        }
 
         async function playRound (game, aiTimer) {
             let result = await takeTurns(aiTimer, game);

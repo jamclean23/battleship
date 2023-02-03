@@ -15,23 +15,6 @@ function initialize () {
         renderNodeSquares(board);
     });
 
-    setupListeners();
-
-    function setupListeners () {
-        // Get a nodelist of the buttons on the arrow pad
-        const arrows = document.querySelectorAll('.arrow');
-
-        // Iterate through them
-        arrows.forEach((button) => {
-            button.addEventListener('click', handleClick);
-
-            function handleClick (event) {
-                console.log(event.srcElement.id);
-            }
-        });
-
-    }
-
     function addEmpty (board) {
         // Create empty square and give it a class
         let newDiv = document.createElement('div');
