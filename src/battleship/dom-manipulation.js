@@ -100,12 +100,15 @@ function initialize () {
     }
 }
 
-function updateBoards (boards) {
+function updateBoards (boards, players) {
+    console.log(boards);
     // Get player's own boards from the DOM
     const ownRenderedBoards = document.querySelectorAll('.board.own');
 
     // Iterate through boards
     ownRenderedBoards.forEach((renderedBoard, index) => {
+        // Assign an owner to each board
+        renderedBoard.player = players[index];
         // Get nodelist of all squares on the boards
         const nodeSquares = renderedBoard.querySelectorAll('.gameSquare');
         // Iterate though them
@@ -123,6 +126,8 @@ function updateBoards (boards) {
 
     // Iterate through boards
     theirRenderedBoards.forEach((renderedBoard, index) => {
+        // Assign an owner to each board
+        renderedBoard.player = players[index];
         // Get a nodelist of all the squares on the board
         const nodeSquares = renderedBoard.querySelectorAll('.gameSquare');
         // Iterate through them

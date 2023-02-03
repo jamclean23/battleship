@@ -31,7 +31,7 @@ function initialize (player1 = 'player', player2 = 'player') {
         });
 
         // Draw boards
-        Dom.updateBoards(this.boards);
+        Dom.updateBoards(this.boards, this.players);
 
         // Name players
         this.players.forEach((player, index) => {
@@ -76,9 +76,10 @@ function initialize (player1 = 'player', player2 = 'player') {
                         case 'commit':
                             break
                     }
-                    
-                    console.log(player.selected);
 
+                    // Render
+                    // Dom.updateBoards(this.boards, this.players);
+                    
                     function moveSelection (selected, xChange, yChange) {
                         console.log(selected);
                         selected.x = selected.x + xChange;
@@ -134,7 +135,7 @@ function initialize (player1 = 'player', player2 = 'player') {
             }
 
             // Render boards
-            Dom.updateBoards(game.boards);
+            Dom.updateBoards(game.boards, game.players);
 
             // Check for winner and return
             winner = game.testWinner();
