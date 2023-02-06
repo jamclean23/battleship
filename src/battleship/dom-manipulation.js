@@ -120,7 +120,7 @@ function updateBoards (game) {
             square.meta.square = findNode(square.meta.x, square.meta.y, boards[index]);
 
             // Render meta
-            renderOwnMeta(square); 
+            renderOwnMeta(game, renderedBoard, square); 
         });
     });
 
@@ -142,14 +142,14 @@ function updateBoards (game) {
             square.meta.square = findNode(square.meta.x, square.meta.y, boards[1 - index]);
 
             // Render meta
-            renderTheirMeta(renderedBoard, square);
+            renderTheirMeta(game, renderedBoard, square);
         });
 
     });
 
 }
 
-function renderTheirMeta (renderedBoard, square) {
+function renderTheirMeta (game, renderedBoard, square) {
     const ship = square.meta.square.ship;
 
     if (ship && square.meta.square.attacked) {
@@ -163,7 +163,7 @@ function renderTheirMeta (renderedBoard, square) {
     }
 
     if (renderedBoard.player.isTurn && renderedBoard.player.selected) {
-        if (square.meta.x === renderedBoard.player.selected.x && square.meta.y === renderedBoard.player.selected.y) {
+        if (game.phase === 'game' && square.meta.x === renderedBoard.player.selected.x && square.meta.y === renderedBoard.player.selected.y) {
             square.classList.add('selected');
         } else {
             square.classList.remove('selected');
@@ -171,7 +171,7 @@ function renderTheirMeta (renderedBoard, square) {
     }
 }
 
-function renderOwnMeta (square) {
+function renderOwnMeta (game, renderedBoard, square) {
     const ship = square.meta.square.ship;
 
     if (ship) {
@@ -188,6 +188,15 @@ function renderOwnMeta (square) {
         square.style.backgroundColor = 'blue';
     }
 
+    if (renderedBoard.player.isTurn && renderedBoard.player.selected) {
+        if (game.phase === 'placement' && square.meta.x === renderedBoard.player.selected.x && square.meta.y === renderedBoard.player.selected.y) {
+            square.classList.add('selected');
+        } else {
+            square.classList.remove('selected');
+        }
+    } else {
+        square.classList.remove('selected');
+    }
 }
 
 function findNode (x, y, board) {

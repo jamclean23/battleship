@@ -293,6 +293,10 @@ describe('Game object:', () => {
             expect(newGame.players[0].board).toBe(newGame.boards[0]);
             expect(newGame.players[1].board).toBe(newGame.boards[1]);
         });
+
+        test('Phase property added', () => {
+            expect(newGame.phase).toBe('placement');
+        })
     });
 
     describe('Methods:', () => {

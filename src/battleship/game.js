@@ -26,38 +26,55 @@ function initialize (player1 = 'player', player2 = 'player') {
     async function mainLoop () {
         // SETUP
         
+        // Give player 1 the starting turn
+        this.players[0].isTurn = true;
+
+        // Initialize arrow keys
         setupListeners(this);
 
+
+        
         // Populate game boards
+        console.log('Placement Phase');
         // Determine player type and appropriate placement method
         for (let i = 0; i < this.boards.length; i++) {
+            // Draw boards
+            Dom.updateBoards(this);
+            
+            console.log('Player: ' + i);
             if (this.players[i].type === 'ai') {
                 this.Ai.populate(this.boards[i]);
             } else if (this.players[i].type === 'player') {
                 await playerPlaceLoop(this.boards[i]);
-                console.log('resumed');
             }
+            toggleTurns(this);
         }
-
+        
         // Draw boards
         Dom.updateBoards(this);
-
+        
         // Name players
         this.players.forEach((player, index) => {
             player.name = player.name + ' #' + (index + 1);
         });
-
-        // Give player 1 the starting turn
-        this.players[0].isTurn = true;
-
-
+        
         // LOOP
+        console.log('Game Phase');
+        this.phase = 'game';
         playRound(this, 500);
 
         function playerPlaceLoop (board) {
             return new Promise((resolve) => {
-                console.log('pausing');
-                setTimeout(resolve, 3000);
+                // Setup commit button
+                const commitButton = document.querySelector('#commit');
+
+                // Wait for user input, check for valid selection, and either resolve or continue loop
+                commitButton.addEventListener('click', handleClick);
+
+                function handleClick () {
+                    commitButton.removeEventListener('click', handleClick);
+                    resolve();
+                }
             });
         }
 
@@ -123,6 +140,12 @@ function initialize (player1 = 'player', player2 = 'player') {
 
         }
 
+        function toggleTurns (game) {
+            game.players.forEach((player) => {
+                player.isTurn ? player.isTurn = false: player.isTurn = true ;
+            });
+        }
+
         async function playRound (game, aiTimer) {
             let result = await takeTurns(aiTimer, game);
             console.log(result.winner.name + ' has won in ' + result.turns + ' turns!');
@@ -172,11 +195,6 @@ function initialize (player1 = 'player', player2 = 'player') {
             let result = await recurse();
             return result;
 
-            function toggleTurns (game) {
-                game.players.forEach((player) => {
-                    player.isTurn ? player.isTurn = false: player.isTurn = true ;
-                });
-            }
             function getAttack (game, playerTurn) {
                 return new Promise((resolve) => {
                     // Set up commit button
@@ -241,7 +259,8 @@ function initialize (player1 = 'player', player2 = 'player') {
         boards,
         Ai,
         testWinner,
-        mainLoop
+        mainLoop,
+        phase: 'placement'
     };
 }
 
