@@ -23,12 +23,19 @@ function initialize (player1 = 'player', player2 = 'player') {
     });
 
     // Main game loop
-    function mainLoop () {
+    async function mainLoop () {
         // SETUP
+
         // Populate game boards
-        this.boards.forEach((board, index) => {
-            this.Ai.populate(board);
-        });
+        // Determine player type and appropriate placement method
+        for (let i = 0; i < this.boards.length; i++) {
+            if (this.players[i].type === 'ai') {
+                this.Ai.populate(this.boards[i]);
+            } else if (this.players[i].type === 'player') {
+                await playerPlaceLoop(this.boards[i]);
+                console.log('resumed');
+            }
+        }
 
         // Draw boards
         Dom.updateBoards(this);
@@ -45,6 +52,13 @@ function initialize (player1 = 'player', player2 = 'player') {
 
         // LOOP
         playRound(this, 500);
+
+        function playerPlaceLoop (board) {
+            return new Promise((resolve) => {
+                console.log('pausing');
+                setTimeout(resolve, 3000);
+            });
+        }
 
         function setupListeners (game) {
             // Get a nodelist of the buttons on the arrow pad
