@@ -67,20 +67,24 @@ function initialize (player1 = 'player', player2 = 'player') {
 
             // Iterate through ships list, continuing once placement is valid
             for (let i = 0; i < board.shipsList.length; i++) {
-                console.log('Loop: ' + i);
+                let player = game.players[playerIndex];
+                player.placing.ship = board.shipsList[i];
+                player.placing.orientation = 'horizontal';
+
+                // Initialize preview
+                getPreview(game);
+
                 let result = 'invalid';
-                let orientation = 'horizontal';
 
                 while (result != 'valid') {
-                    console.log('Start of loop: ' + orientation);
-                    result = await waitForInput(board, i, orientation);
-                    console.log('resolved: ' + result);
+
+                    result = await waitForInput(board, i, player.placing.orientation);
 
                     if (result === 'horizontal' || result === 'vertical') {
-                        orientation = result;
+                        player.placing.orientation = result;
                     }
-
                     Dom.updateBoards(game);
+                    getPreview(game);
                 }
             }
 
@@ -107,7 +111,6 @@ function initialize (player1 = 'player', player2 = 'player') {
                         commitButton.removeEventListener('click', handleCommit);
                         commitButton.removeEventListener('click', handleCommit);
                         let result = board.placeShip(game.players[playerIndex].selected.x, game.players[playerIndex].selected.y, board.shipsList[i].length, orientation, board.shipsList[i].name);
-                        console.log('result of function: ' + result);
                         resolve(result);
                     }
 
@@ -115,22 +118,64 @@ function initialize (player1 = 'player', player2 = 'player') {
                         commitButton.removeEventListener('click', handleCommit);
                         rotateButton.removeEventListener('click', handleRotate);
                         orientation === 'horizontal'? orientation = 'vertical': orientation = 'horizontal';
-                        console.log('Result of function: ' + orientation);
+
                         resolve(orientation);
                     }
                 });
             }
         }
 
+        function getPreview (game) {
+            console.log('Getting preview');
+            // Calculate which squares should be used for the preview
+
+            // Player whose turn it is
+            let player = findWhoseTurn(game);
+
+            // Get own rendered board for the player
+            const ownRenderedBoards = document.querySelectorAll('.board.own');
+            let ownRenderedBoard;
+            ownRenderedBoards.forEach((renderedBoard) => {
+                if (renderedBoard.player === player) {
+                    ownRenderedBoard = renderedBoard;
+                }
+            });
+
+            // Get preview squares and assign
+            for (let i = 1; i < player.placing.ship.length; i++) {
+                if (player.placing.orientation === 'horizontal') {
+                    let square = findRenderedSquare(player.selected.x + i, player.selected.y, ownRenderedBoard);
+                    square.classList.add('preview');
+                } else if (player.placing.orientation === 'vertical') {
+                    let square = findRenderedSquare(player.selected.x, player.selected.y + i, ownRenderedBoard);
+                    square.classList.add('preview');
+                }
+            }
+
+            function findRenderedSquare (x, y, renderedBoard) {
+                const squares = renderedBoard.querySelectorAll('.gameSquare');
+                let result;
+                squares.forEach((square) => {
+                    if (square.meta.x === x && square.meta.y === y) {
+                        result = square;
+                    }
+                });
+                return result;
+            }
+        }
+
         function setupListeners (game) {
+
             // Get a nodelist of the buttons on the arrow pad
             const arrows = document.querySelectorAll('.arrow');
     
             // Iterate through them
             arrows.forEach((button) => {
-                button.addEventListener('click', handleClick);
-    
+                
+                    button.addEventListener('click', handleClick);
+                
                 function handleClick (event) {
+
                     let key = event.srcElement.id;
                     let player = findWhoseTurn(game);
                     if(player.type === 'ai') return;
@@ -167,10 +212,13 @@ function initialize (player1 = 'player', player2 = 'player') {
 
                         return selected;
                     }
-                    
+
+                    if (game.phase === 'placement') getPreview(game);
+
                 }
+                
             });
-    
+
         }
 
         function findWhoseTurn (game) {

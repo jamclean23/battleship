@@ -28,6 +28,11 @@ function createPlayer (type = 'player') {
             selected: {
                 x: 0,
                 y: 0
+            },
+            placing: {
+                ship: false,
+                orientation: 'horizontal'
+
             }
         }  
     } else if (type === 'ai') {

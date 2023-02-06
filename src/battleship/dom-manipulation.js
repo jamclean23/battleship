@@ -184,6 +184,12 @@ function renderTheirMeta (game, renderedBoard, square) {
 function renderOwnMeta (game, renderedBoard, square) {
     const ship = square.meta.square.ship;
 
+    if (square.meta.preview) {
+        square.classList.add('preview');
+    } else {
+        square.classList.remove('preview');
+    }
+    
     if (ship) {
         square.innerText = ship.name.slice(0, 1); 
         square.style.backgroundColor = 'gray';
