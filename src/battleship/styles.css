@@ -23,13 +23,17 @@ body {
     display: grid;
     gap: .3rem;
     grid-template-areas: 
-    ".      up     ."
+    ".      up   rotate"
     "left commit right"
     ".     down    .";
 }
 .arrow {
     width: 2rem;
     height: 2rem;
+}
+#rotate {
+    grid-area: rotate;
+    font-size: .5rem;
 }
 #up {
     grid-area: up;

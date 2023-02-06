@@ -111,6 +111,11 @@ function updateBoards (game) {
         // Assign an owner to each board
         renderedBoard.player = players[index];
 
+        // Hide the board if it's an ai
+        if (renderedBoard.player.type === 'ai' && !game.players[1 - index].type === 'ai') {
+            renderedBoard.style.display = 'none';
+        }
+
         // Get nodelist of all squares on the boards
         const nodeSquares = renderedBoard.querySelectorAll('.gameSquare');
 
@@ -131,6 +136,11 @@ function updateBoards (game) {
     theirRenderedBoards.forEach((renderedBoard, index) => {
         // Assign an owner to each board
         renderedBoard.player = players[index];
+
+        // Hide the board if it's an ai
+        if (renderedBoard.player.type === 'ai' && !game.players[1 - index].type === 'ai') {
+            renderedBoard.style.display = 'none';
+        }
 
         // Get a nodelist of all the squares on the board
         const nodeSquares = renderedBoard.querySelectorAll('.gameSquare');

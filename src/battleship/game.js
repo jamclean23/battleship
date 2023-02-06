@@ -67,11 +67,19 @@ function initialize (player1 = 'player', player2 = 'player') {
 
             // Iterate through ships list, continuing once placement is valid
             for (let i = 0; i < board.shipsList.length; i++) {
-                let placement = 'invalid';
+                console.log('Loop: ' + i);
+                let result = 'invalid';
+                let orientation = 'horizontal';
 
-                while (placement === 'invalid') {
-                    await waitForInput(board);
-                    placement = board.placeShip(game.players[playerIndex].selected.x, game.players[playerIndex].selected.y, board.shipsList[i].length, 'horizontal', board.shipsList[i].name);
+                while (result != 'valid') {
+                    console.log('Start of loop: ' + orientation);
+                    result = await waitForInput(board, i, orientation);
+                    console.log('resolved: ' + result);
+
+                    if (result === 'horizontal' || result === 'vertical') {
+                        orientation = result;
+                    }
+
                     Dom.updateBoards(game);
                 }
             }
@@ -81,17 +89,34 @@ function initialize (player1 = 'player', player2 = 'player') {
                 resolve();
             });
 
-            function waitForInput (board) {
+            function waitForInput (board, i, orientation) {
                 return new Promise((resolve) => {
                     // Setup commit button
                     const commitButton = document.querySelector('#commit');
 
                     // Wait for user input, check for valid selection, and either resolve or continue loop
-                    commitButton.addEventListener('click', handleClick);
+                    commitButton.addEventListener('click', handleCommit);
 
-                    function handleClick () {
-                        commitButton.removeEventListener('click', handleClick);
-                        resolve();
+                    // Setup rotate button
+                    const rotateButton = document.querySelector('#rotate');
+                    
+                    // wait for user input, rotate ship and continue loop 
+                    rotateButton.addEventListener('click', handleRotate);
+
+                    function handleCommit () {
+                        commitButton.removeEventListener('click', handleCommit);
+                        commitButton.removeEventListener('click', handleCommit);
+                        let result = board.placeShip(game.players[playerIndex].selected.x, game.players[playerIndex].selected.y, board.shipsList[i].length, orientation, board.shipsList[i].name);
+                        console.log('result of function: ' + result);
+                        resolve(result);
+                    }
+
+                    function handleRotate () {
+                        commitButton.removeEventListener('click', handleCommit);
+                        rotateButton.removeEventListener('click', handleRotate);
+                        orientation === 'horizontal'? orientation = 'vertical': orientation = 'horizontal';
+                        console.log('Result of function: ' + orientation);
+                        resolve(orientation);
                     }
                 });
             }
