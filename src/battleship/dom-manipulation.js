@@ -112,7 +112,7 @@ function updateBoards (game) {
         renderedBoard.player = players[index];
 
         // Hide the board if it's an ai
-        if (renderedBoard.player.type === 'ai' && !game.players[1 - index].type === 'ai') {
+        if (renderedBoard.player.type === 'ai' && game.players[1 - index].type === 'player') {
             renderedBoard.style.display = 'none';
         }
 
@@ -138,7 +138,7 @@ function updateBoards (game) {
         renderedBoard.player = players[index];
 
         // Hide the board if it's an ai
-        if (renderedBoard.player.type === 'ai' && !game.players[1 - index].type === 'ai') {
+        if (renderedBoard.player.type === 'ai' && game.players[1 - index].type === 'player') {
             renderedBoard.style.display = 'none';
         }
 
