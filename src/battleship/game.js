@@ -25,6 +25,8 @@ function initialize (player1 = 'player', player2 = 'player') {
     // Main game loop
     async function mainLoop () {
         // SETUP
+        
+        setupListeners(this);
 
         // Populate game boards
         // Determine player type and appropriate placement method
@@ -48,7 +50,6 @@ function initialize (player1 = 'player', player2 = 'player') {
         // Give player 1 the starting turn
         this.players[0].isTurn = true;
 
-        setupListeners(this);
 
         // LOOP
         playRound(this, 500);
@@ -90,8 +91,6 @@ function initialize (player1 = 'player', player2 = 'player') {
                         case 'commit':
                             break
                     }
-                    console.log('Player selected:');
-                    console.log(player.selected);
 
                     Dom.updateBoards(game);
                     
@@ -130,6 +129,9 @@ function initialize (player1 = 'player', player2 = 'player') {
         }
 
         async function takeTurns (aiTimer = 500, game, winner = false, turns = 0, player = 0) {
+            // Initial render
+            Dom.updateBoards(game);
+
             // log progress for testing
             console.log('player turn: ' + (player + 1));
 
