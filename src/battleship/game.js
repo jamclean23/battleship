@@ -40,12 +40,12 @@ function initialize (player1 = 'player', player2 = 'player') {
         for (let i = 0; i < this.boards.length; i++) {
             // Draw boards
             Dom.updateBoards(this);
-            
+
             console.log('Player: ' + i);
             if (this.players[i].type === 'ai') {
                 this.Ai.populate(this.boards[i]);
             } else if (this.players[i].type === 'player') {
-                await playerPlaceLoop(this.boards[i]);
+                await playerPlaceLoop(this, this.boards[i], i);
             }
             toggleTurns(this);
         }
@@ -63,19 +63,38 @@ function initialize (player1 = 'player', player2 = 'player') {
         this.phase = 'game';
         playRound(this, 500);
 
-        function playerPlaceLoop (board) {
-            return new Promise((resolve) => {
-                // Setup commit button
-                const commitButton = document.querySelector('#commit');
+        async function playerPlaceLoop (game, board, playerIndex) {
 
-                // Wait for user input, check for valid selection, and either resolve or continue loop
-                commitButton.addEventListener('click', handleClick);
+            // Iterate through ships list, continuing once placement is valid
+            for (let i = 0; i < board.shipsList.length; i++) {
+                let placement = 'invalid';
 
-                function handleClick () {
-                    commitButton.removeEventListener('click', handleClick);
-                    resolve();
+                while (placement === 'invalid') {
+                    await waitForInput(board);
+                    placement = board.placeShip(game.players[playerIndex].selected.x, game.players[playerIndex].selected.y, board.shipsList[i].length, 'horizontal', board.shipsList[i].name);
+                    Dom.updateBoards(game);
                 }
+            }
+
+            // Return after finished
+            return new Promise((resolve) => {
+                resolve();
             });
+
+            function waitForInput (board) {
+                return new Promise((resolve) => {
+                    // Setup commit button
+                    const commitButton = document.querySelector('#commit');
+
+                    // Wait for user input, check for valid selection, and either resolve or continue loop
+                    commitButton.addEventListener('click', handleClick);
+
+                    function handleClick () {
+                        commitButton.removeEventListener('click', handleClick);
+                        resolve();
+                    }
+                });
+            }
         }
 
         function setupListeners (game) {
