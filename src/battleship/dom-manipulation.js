@@ -125,8 +125,11 @@ function updateBoards (game) {
             square.meta.square = findNode(square.meta.x, square.meta.y, boards[index]);
 
             // Render meta
-            renderOwnMeta(game, renderedBoard, square); 
+            renderOwnMeta(game, renderedBoard, square);     
         });
+
+        // Decide whether or not to display the board
+        showOrHideBoard(renderedBoard);
     });
 
     // Get players' 'their' boards from the Dom
@@ -155,6 +158,8 @@ function updateBoards (game) {
             renderTheirMeta(game, renderedBoard, square);
         });
 
+        // Decide whether or not to display the board
+        showOrHideBoard(renderedBoard);
     });
 
 }
@@ -232,7 +237,36 @@ function findNode (x, y, board) {
     
 }
 
+function showOrHideBoard (board) {
+    console.log(board.player.show);
+    showIfTurn(board);
+    if (board.player.show === 'myShips') showMyShips(board);
+    if (board.player.show === 'targeting') showTargeting(board);
+
+    function showMyShips (board) {
+        if (!board.classList.contains('own')) {
+            board.style.display = 'none';
+        } 
+    }
+    
+    function showTargeting (board) {
+        if (!board.classList.contains('theirs')) {
+            board.style.display = 'none';
+        } 
+    }
+    
+    function showIfTurn (board) {
+        if (board.player.isTurn) {
+            board.style.display = 'grid';
+        } else {
+            board.style.display = 'none';
+        }
+    }
+}
+
+
+
 export {
     initialize,
-    updateBoards
+    updateBoards,
 }

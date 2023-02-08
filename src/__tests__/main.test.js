@@ -232,6 +232,7 @@ describe('Player object:', () => {
         expect(player1.selected.x).toBe(0);
         expect(player1.selected.y).toBe(0);
         expect(typeof player1.placing).toBe('object');
+        expect(player1.show).toBe('myShips');
 
         expect(aiPlayer.board).toBeUndefined();
         expect(aiPlayer.isTurn).toBeFalsy();

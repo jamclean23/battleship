@@ -87,10 +87,6 @@ main {
     display: grid;
     align-items: center;
     justify-items: center;
-    grid-template-areas: 
-    "player1Theirs player2Theirs"
-    "player1Own    player2Own   "
-    ;
 }
 
 .board {
@@ -104,21 +100,6 @@ main {
     padding: .5rem;
 }
 
-.player1.theirs {
-    grid-area: player1Theirs;
-}
-
-.player1.own {
-    grid-area: player1Own;
-}
-
-.player2.theirs {
-    grid-area: player2Theirs;
-}
-
-.player2.own {
-    grid-area: player2Own;
-}
 
 .gridSquare {
     display: grid;

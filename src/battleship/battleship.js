@@ -5,10 +5,12 @@ import * as Game from './game.js';
 import * as Dom from './dom-manipulation.js'
 
 
+// Landing Screen
 
+// Choose players
 
-// Initialize
-let newGame = Game.initialize('player', 'ai');
+// Initialize Game 
+let newGame = Game.initialize('player', 'player');
 Dom.initialize();
 
 // Loop

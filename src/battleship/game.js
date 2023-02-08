@@ -58,7 +58,7 @@ function initialize (player1 = 'player', player2 = 'player') {
             player.name = player.name + ' #' + (index + 1);
         });
         
-        // LOOP
+        // Game loop
         console.log('Game Phase');
         this.phase = 'game';
         playRound(this, 500);
@@ -166,59 +166,85 @@ function initialize (player1 = 'player', player2 = 'player') {
         }
 
         function setupListeners (game) {
+            // Get a nodelist of display buttons
+            const displayButtons = document.querySelectorAll('.displayButton');
+
+            // Iterate through them
+            displayButtons.forEach((button) => {
+                button.addEventListener('click', handleDisplayClick);
+            });
+
+            function handleDisplayClick (event) {
+
+                const key = event.srcElement.id;
+                const player = findWhoseTurn(game);
+                console.log(player);
+
+                switch(key) {
+                    case 'myShips':
+                        player.show = 'myShips';
+                        break;
+                    case 'targeting':
+                        player.show = 'targeting';
+                        break;
+                }
+
+                Dom.updateBoards(game);
+                if (game.phase === 'placement') getPreview(game);
+
+            }
 
             // Get a nodelist of the buttons on the arrow pad
             const arrows = document.querySelectorAll('.arrow');
     
             // Iterate through them
             arrows.forEach((button) => {
-                
-                    button.addEventListener('click', handleClick);
-                
-                function handleClick (event) {
-
-                    let key = event.srcElement.id;
-                    let player = findWhoseTurn(game);
-                    if(player.type === 'ai') return;
-
-                    if (!player) throw new Error('Game not started');
-                    switch(key) {
-                        case 'up':
-                            player.selected = moveSelection(player.selected, 0, -1);
-                            break;
-                        case 'down':
-                            player.selected = moveSelection(player.selected, 0, 1);
-                            break;
-                        case 'left':
-                            player.selected = moveSelection(player.selected, -1, 0);
-                            break;
-                        case 'right':
-                            player.selected = moveSelection(player.selected, 1, 0);
-                            break
-                        case 'commit':
-                            break
-                    }
-
-                    Dom.updateBoards(game);
-                    
-                    function moveSelection (selected, xChange, yChange) {
-                        selected.x = selected.x + xChange;
-                        selected.y = selected.y + yChange;
-
-                        if (selected.x > 9) selected.x = 9;
-                        if (selected.x < 0) selected.x = 0;
-
-                        if (selected.y > 9) selected.y = 9;
-                        if (selected.y < 0) selected.y = 0;
-
-                        return selected;
-                    }
-
-                    if (game.phase === 'placement') getPreview(game);
-
-                }
-                
+                button.addEventListener('click', handleArrowClick);
             });
+
+            function handleArrowClick (event) {
+
+                let key = event.srcElement.id;
+                let player = findWhoseTurn(game);
+                if(player.type === 'ai') return;
+
+                if (!player) throw new Error('Game not started');
+                switch(key) {
+                    case 'up':
+                        player.selected = moveSelection(player.selected, 0, -1);
+                        break;
+                    case 'down':
+                        player.selected = moveSelection(player.selected, 0, 1);
+                        break;
+                    case 'left':
+                        player.selected = moveSelection(player.selected, -1, 0);
+                        break;
+                    case 'right':
+                        player.selected = moveSelection(player.selected, 1, 0);
+                        break
+                    case 'commit':
+                        break
+                }
+
+                Dom.updateBoards(game);
+                if (game.phase === 'placement') getPreview(game);
+
+                
+                function moveSelection (selected, xChange, yChange) {
+                    selected.x = selected.x + xChange;
+                    selected.y = selected.y + yChange;
+
+                    if (selected.x > 9) selected.x = 9;
+                    if (selected.x < 0) selected.x = 0;
+
+                    if (selected.y > 9) selected.y = 9;
+                    if (selected.y < 0) selected.y = 0;
+
+                    return selected;
+                }
+
+
+            }
 
         }
 

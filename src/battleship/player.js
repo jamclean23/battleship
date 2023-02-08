@@ -33,7 +33,8 @@ function createPlayer (type = 'player') {
                 ship: false,
                 orientation: 'horizontal'
 
-            }
+            },
+            show: 'myShips'
         }  
     } else if (type === 'ai') {
         return {
