@@ -23,7 +23,7 @@ module.exports = merge(common, {
     },
     // Creates html file for every entry point, outputs to the folder of the same name
     // Additional plugins may be concatted to the end of the array or placed in the original array
-    plugins: [].concat(pages.map((page) => {
+    plugins: [].concat(pages.map((page, index) => {
         return new HtmlWebpackPlugin({
             template: './src/' + page + '/' + page + '.html',
             filename: page + '/' + page + '.html',
