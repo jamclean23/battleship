@@ -126,7 +126,6 @@ function initialize (player1 = 'player', player2 = 'player') {
         }
 
         function getPreview (game) {
-            console.log('Getting preview');
             // Calculate which squares should be used for the preview
 
             // Player whose turn it is
@@ -145,10 +144,11 @@ function initialize (player1 = 'player', player2 = 'player') {
             for (let i = 1; i < player.placing.ship.length; i++) {
                 if (player.placing.orientation === 'horizontal') {
                     let square = findRenderedSquare(player.selected.x + i, player.selected.y, ownRenderedBoard);
-                    square.classList.add('preview');
+                    if (square) square.classList.add('preview');
+                    
                 } else if (player.placing.orientation === 'vertical') {
                     let square = findRenderedSquare(player.selected.x, player.selected.y + i, ownRenderedBoard);
-                    square.classList.add('preview');
+                    if (square) square.classList.add('preview');
                 }
             }
 
@@ -160,7 +160,8 @@ function initialize (player1 = 'player', player2 = 'player') {
                         result = square;
                     }
                 });
-                return result;
+                if (result) return result;
+                return false;
             }
         }
 
@@ -323,8 +324,6 @@ function initialize (player1 = 'player', player2 = 'player') {
 
 
                         function checkValidInput (x, y) {
-                            console.log('x ' + x);
-                            console.log('y ' + y);
                             if (x >= 0 && x < 10 && y >= 0 && y < 10) {
                                 return true;
                             } else {
