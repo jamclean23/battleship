@@ -247,17 +247,6 @@ function initialize (player1 = 'player', player2 = 'player') {
 
         }
 
-        function findWhoseTurn (game) {
-            let result = false;
-            game.players.forEach((player) => {
-                if (player.isTurn){
-                    result = player;
-                }
-            });
-            return result;
-
-        }
-
         function toggleTurns (game) {
             game.players.forEach((player) => {
                 player.isTurn ? player.isTurn = false: player.isTurn = true ;
@@ -269,7 +258,7 @@ function initialize (player1 = 'player', player2 = 'player') {
             console.log(result.winner.name + ' has won in ' + result.turns + ' turns!');
         }
 
-        async function takeTurns (aiTimer = 500, game, winner = false, turns = 0, player = 0) {
+        async function takeTurns (aiTimer = 0, game, winner = false, turns = 0, player = 0) {
             // Initial render
             Dom.updateBoards(game);
 
@@ -370,13 +359,25 @@ function initialize (player1 = 'player', player2 = 'player') {
         };
     }
 
+    function findWhoseTurn (game) {
+        let result = false;
+        game.players.forEach((player) => {
+            if (player.isTurn){
+                result = player;
+            }
+        });
+        return result;
+
+    }
+
     return {
         players,
         boards,
         Ai,
         testWinner,
         mainLoop,
-        phase: 'placement'
+        phase: 'placement',
+        findWhoseTurn
     };
 }
 

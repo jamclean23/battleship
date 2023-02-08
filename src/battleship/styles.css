@@ -10,6 +10,7 @@ body {
     height: 100vh;
     width: 100vw;
     grid-template-rows: 4rem;
+    overflow: hidden;
 }
 
 header {
@@ -31,7 +32,7 @@ header {
 
 .gameSquare.selected {
     background-color: rgb(8, 242, 8);
-    border: 1px solid rgb(8, 242, 8);
+    border: 4px solid rgb(8, 242, 8);
 }
 
 .gameSquare.preview {
@@ -43,7 +44,7 @@ header {
     display: grid;
     justify-items: center;
     align-items: center;
-    grid-template-columns: repeat(7, 3rem);
+    grid-template-columns: repeat(7, 1fr);
     gap: .5rem;
     grid-template-areas: 
     ". . . up    . . rotate"
@@ -51,8 +52,8 @@ header {
     ". .  .   down    . . .";
 }
 .arrow {
-    width: 3rem;
-    height: 3rem;
+    width: 5rem;
+    height: 5rem;
 }
 #rotate {
     grid-area: rotate;
@@ -99,13 +100,14 @@ main {
     display: grid;
     align-items: center;
     justify-items: center;
+    grid-template-rows: .5fr .3fr 8fr 5fr;
 }
 
 .board {
     border: 1px solid rgba(0, 0, 0, 0.411);
     border-radius: 6px;
-    height: 45vh;
-    width: 45vh;
+    height: 90vw;
+    width: 90vw;
     display: grid;
     grid-template-columns: repeat(11, 1fr);
     grid-template-rows: repeat(11, 1fr);

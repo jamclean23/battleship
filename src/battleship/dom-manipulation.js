@@ -103,17 +103,26 @@ function updateBoards (game) {
 
     let boards = game.boards;
     let players = game.players;
+    let playerWhoseTurn = game.findWhoseTurn(game);
+
+
+    // If it's the ai's turn, do not render
+    if (playerWhoseTurn.type === 'ai') return;
+
+    // Get DOM board nameplate
+    const boardNameplate = document.querySelector('#boardIdent');
+    // Update board nameplate
+    if (playerWhoseTurn.show === 'myShips') {
+        boardNameplate.innerText = 'My Fleet';
+    } else {
+        boardNameplate.innerText = 'Radar';
+    }
+    
 
     // Get DOM player nameplate
-    const nameplate = document.querySelector('#playerIdent');
-
+    const playerNameplate = document.querySelector('#playerIdent');
     // Update player nameplate
-    players.forEach((player) => {
-        if (player.isTurn) {
-            console.log(player);
-            nameplate.innerText = player.name;
-        }
-    });
+    playerNameplate.innerText = playerWhoseTurn.name;
 
     // Get player's own boards from the DOM
     const ownRenderedBoards = document.querySelectorAll('.board.own');
@@ -250,6 +259,7 @@ function findNode (x, y, board) {
 }
 
 function showOrHideBoard (board) {
+    
     showIfTurn(board);
     if (board.player.show === 'myShips') showMyShips(board);
     if (board.player.show === 'targeting') showTargeting(board);
