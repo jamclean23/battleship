@@ -32,7 +32,11 @@ function initialize (player1 = 'player', player2 = 'player') {
         // Initialize arrow keys
         setupListeners(this);
 
-
+        // Name players
+        this.players.forEach((player, index) => {
+            player.name = player.name + ' #' + (index + 1);
+        });
+        
         
         // Populate game boards
         console.log('Placement Phase');
@@ -52,11 +56,6 @@ function initialize (player1 = 'player', player2 = 'player') {
         
         // Draw boards
         Dom.updateBoards(this);
-        
-        // Name players
-        this.players.forEach((player, index) => {
-            player.name = player.name + ' #' + (index + 1);
-        });
         
         // Game loop
         console.log('Game Phase');

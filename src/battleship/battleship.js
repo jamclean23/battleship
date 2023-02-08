@@ -10,7 +10,7 @@ import * as Dom from './dom-manipulation.js'
 // Choose players
 
 // Initialize Game 
-let newGame = Game.initialize('player', 'player');
+let newGame = Game.initialize('player', 'ai');
 Dom.initialize();
 
 // Loop

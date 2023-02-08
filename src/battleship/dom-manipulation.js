@@ -103,6 +103,18 @@ function updateBoards (game) {
 
     let boards = game.boards;
     let players = game.players;
+
+    // Get DOM player nameplate
+    const nameplate = document.querySelector('#playerIdent');
+
+    // Update player nameplate
+    players.forEach((player) => {
+        if (player.isTurn) {
+            console.log(player);
+            nameplate.innerText = player.name;
+        }
+    });
+
     // Get player's own boards from the DOM
     const ownRenderedBoards = document.querySelectorAll('.board.own');
 
@@ -238,7 +250,6 @@ function findNode (x, y, board) {
 }
 
 function showOrHideBoard (board) {
-    console.log(board.player.show);
     showIfTurn(board);
     if (board.player.show === 'myShips') showMyShips(board);
     if (board.player.show === 'targeting') showTargeting(board);
