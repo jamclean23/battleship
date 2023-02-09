@@ -13,6 +13,8 @@ body {
 }
 
 header {
+    height: 100%;
+    width: 100%;
     display: grid;
     background-color: black;
     color: white;
@@ -21,6 +23,11 @@ header {
     align-items: center;
 }
 
+button {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
 #playerIdent {
     font-size: 4vh;
 }
@@ -108,7 +115,7 @@ main {
     display: grid;
     align-items: center;
     justify-items: center;
-    grid-template-rows: 5vh 5vh 50vh 36.5vh;
+    grid-template-rows: 5vh 5vh 5vh 36.5vh;
 }
 
 .board {

@@ -106,6 +106,10 @@ function updateBoards (game) {
     let playerWhoseTurn = game.findWhoseTurn(game);
 
 
+    // Hide the rotate button after placement phase
+    const rotateButton = document.querySelector('#rotate');
+    if (game.phase != 'placement') rotateButton.style.display = 'none';
+
     // If it's the ai's turn, do not render
     if (playerWhoseTurn.type === 'ai') return;
 
