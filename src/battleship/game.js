@@ -231,6 +231,11 @@ function initialize (player1 = 'player', player2 = 'player') {
                 game.players[player].attackRandom(game.boards[1 - player]);
             // Wait for input if it's a human player
             } else if (game.players[player].type === 'player') {
+                // Show my fleet screen on start of turn
+                game.findWhoseTurn(game).show = 'myShips';
+                Dom.updateBoards(game);
+
+                // Wait for user input and make attack
                 let coordinates = false;
 
                 while (!coordinates) {
