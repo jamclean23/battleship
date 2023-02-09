@@ -105,6 +105,15 @@ function updateBoards (game) {
     let players = game.players;
     let playerWhoseTurn = game.findWhoseTurn(game);
 
+    // Disable arrows and commit while in fleet view
+    const arrows = document.querySelectorAll('.arrow');
+    arrows.forEach((arrow, index) => {
+        if (playerWhoseTurn.show === 'myShips' && game.phase != 'placement') {
+            arrow.disabled = true;
+        } else {
+            arrow.disabled = false;
+        }
+    });
 
     // Hide the rotate button after placement phase
     const rotateButton = document.querySelector('#rotate');
@@ -297,9 +306,48 @@ function showOrHideBoard (board) {
     }
 }
 
+function getPreview (game) {
+    // Calculate which squares should be used for the preview
 
+    // Player whose turn it is
+    let player = game.findWhoseTurn(game);
+
+    // Get own rendered board for the player
+    const ownRenderedBoards = document.querySelectorAll('.board.own');
+    let ownRenderedBoard;
+    ownRenderedBoards.forEach((renderedBoard) => {
+        if (renderedBoard.player === player) {
+            ownRenderedBoard = renderedBoard;
+        }
+    });
+
+    // Get preview squares and assign
+    for (let i = 1; i < player.placing.ship.length; i++) {
+        if (player.placing.orientation === 'horizontal') {
+            let square = findRenderedSquare(player.selected.x + i, player.selected.y, ownRenderedBoard);
+            if (square) square.classList.add('preview');
+            
+        } else if (player.placing.orientation === 'vertical') {
+            let square = findRenderedSquare(player.selected.x, player.selected.y + i, ownRenderedBoard);
+            if (square) square.classList.add('preview');
+        }
+    }
+
+    function findRenderedSquare (x, y, renderedBoard) {
+        const squares = renderedBoard.querySelectorAll('.gameSquare');
+        let result;
+        squares.forEach((square) => {
+            if (square.meta.x === x && square.meta.y === y) {
+                result = square;
+            }
+        });
+        if (result) return result;
+        return false;
+    }
+}
 
 export {
     initialize,
     updateBoards,
+    getPreview
 }

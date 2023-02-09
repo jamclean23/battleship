@@ -72,7 +72,7 @@ function initialize (player1 = 'player', player2 = 'player') {
                 player.placing.orientation = 'horizontal';
 
                 // Initialize preview
-                getPreview(game);
+                Dom.getPreview(game);
 
                 let result = 'invalid';
 
@@ -84,7 +84,7 @@ function initialize (player1 = 'player', player2 = 'player') {
                         player.placing.orientation = result;
                     }
                     Dom.updateBoards(game);
-                    getPreview(game);
+                    Dom.getPreview(game);
                 }
             }
 
@@ -125,46 +125,6 @@ function initialize (player1 = 'player', player2 = 'player') {
             }
         }
 
-        function getPreview (game) {
-            // Calculate which squares should be used for the preview
-
-            // Player whose turn it is
-            let player = findWhoseTurn(game);
-
-            // Get own rendered board for the player
-            const ownRenderedBoards = document.querySelectorAll('.board.own');
-            let ownRenderedBoard;
-            ownRenderedBoards.forEach((renderedBoard) => {
-                if (renderedBoard.player === player) {
-                    ownRenderedBoard = renderedBoard;
-                }
-            });
-
-            // Get preview squares and assign
-            for (let i = 1; i < player.placing.ship.length; i++) {
-                if (player.placing.orientation === 'horizontal') {
-                    let square = findRenderedSquare(player.selected.x + i, player.selected.y, ownRenderedBoard);
-                    if (square) square.classList.add('preview');
-                    
-                } else if (player.placing.orientation === 'vertical') {
-                    let square = findRenderedSquare(player.selected.x, player.selected.y + i, ownRenderedBoard);
-                    if (square) square.classList.add('preview');
-                }
-            }
-
-            function findRenderedSquare (x, y, renderedBoard) {
-                const squares = renderedBoard.querySelectorAll('.gameSquare');
-                let result;
-                squares.forEach((square) => {
-                    if (square.meta.x === x && square.meta.y === y) {
-                        result = square;
-                    }
-                });
-                if (result) return result;
-                return false;
-            }
-        }
-
         function setupListeners (game) {
             // Get a nodelist of display buttons
             const displayButtons = document.querySelectorAll('.displayButton');
@@ -190,7 +150,7 @@ function initialize (player1 = 'player', player2 = 'player') {
                 }
 
                 Dom.updateBoards(game);
-                if (game.phase === 'placement') getPreview(game);
+                if (game.phase === 'placement') Dom.getPreview(game);
 
             }
 
@@ -227,7 +187,7 @@ function initialize (player1 = 'player', player2 = 'player') {
                 }
 
                 Dom.updateBoards(game);
-                if (game.phase === 'placement') getPreview(game);
+                if (game.phase === 'placement') Dom.getPreview(game);
 
                 
                 function moveSelection (selected, xChange, yChange) {
@@ -368,7 +328,6 @@ function initialize (player1 = 'player', player2 = 'player') {
             }
         });
         return result;
-
     }
 
     return {
