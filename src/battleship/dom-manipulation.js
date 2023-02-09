@@ -110,6 +110,14 @@ function updateBoards (game) {
     const rotateButton = document.querySelector('#rotate');
     if (game.phase != 'placement') rotateButton.style.display = 'none';
 
+    // Hide the radar button during placement phase
+    const targetingButton = document.querySelector('#targeting');
+    if (game.phase === 'placement') {
+        targetingButton.style.display = 'none';
+    } else {
+        targetingButton.style.display = 'grid';
+    }
+
     // If it's the ai's turn, do not render
     if (playerWhoseTurn.type === 'ai') return;
 

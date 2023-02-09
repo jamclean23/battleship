@@ -50,6 +50,7 @@ function initialize (player1 = 'player', player2 = 'player') {
                 this.Ai.populate(this.boards[i]);
             } else if (this.players[i].type === 'player') {
                 await playerPlaceLoop(this, this.boards[i], i);
+                players[i].show = 'myShips';
             }
             toggleTurns(this);
         }
