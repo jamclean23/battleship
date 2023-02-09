@@ -3,6 +3,7 @@ import * as Gameboard from './gameboard.js';
 import * as Ai from './ai.js';
 import * as Dom from './dom-manipulation.js';
 
+
 function initialize (player1 = 'player', player2 = 'player') {
 
     // Initialize game boards
@@ -45,7 +46,6 @@ function initialize (player1 = 'player', player2 = 'player') {
             // Draw boards
             Dom.updateBoards(this);
 
-            console.log('Player: ' + i);
             if (this.players[i].type === 'ai') {
                 this.Ai.populate(this.boards[i]);
             } else if (this.players[i].type === 'player') {
@@ -61,7 +61,7 @@ function initialize (player1 = 'player', player2 = 'player') {
         // Game loop
         console.log('Game Phase');
         this.phase = 'game';
-        playRound(this, 500);
+        playRound(this, 0);
 
         async function playerPlaceLoop (game, board, playerIndex) {
 
@@ -138,7 +138,6 @@ function initialize (player1 = 'player', player2 = 'player') {
 
                 const key = event.srcElement.id;
                 const player = findWhoseTurn(game);
-                console.log(player);
 
                 switch(key) {
                     case 'myShips':
@@ -220,8 +219,12 @@ function initialize (player1 = 'player', player2 = 'player') {
         }
 
         async function takeTurns (aiTimer = 0, game, winner = false, turns = 0, player = 0) {
+            console.log(aiTimer);
             // Initial render
             Dom.updateBoards(game);
+
+            // Splash Screen
+            await Dom.splashscreen(game);
 
             // log progress for testing
             console.log('player turn: ' + (player + 1));
@@ -274,7 +277,6 @@ function initialize (player1 = 'player', player2 = 'player') {
                     const commitButton = document.querySelector('#commit');
                     // Dom.updateInfoBoxes(player.selected.x, player.selected.y);
                     let player = game.players[playerTurn];
-                    console.log('x: ' + player.selected.x);
 
                     commitButton.addEventListener('click', handleResolve);
 
@@ -326,6 +328,7 @@ function initialize (player1 = 'player', player2 = 'player') {
     }
 
     function findWhoseTurn (game) {
+        if (!game) game = this;
         let result = false;
         game.players.forEach((player) => {
             if (player.isTurn){

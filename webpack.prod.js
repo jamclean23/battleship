@@ -34,10 +34,10 @@ module.exports = merge(common, {
         new MiniCssExtractPlugin({
             filename: "[name]/[name]-[contenthash].css",
         }),
-    ].concat(pages.map((page) => {
+    ].concat(pages.map((page, index) => {
         return new HtmlWebpackPlugin({
             template: './src/' + page + '/' + page + '.html',
-            filename: page + '/' + page + '.html',
+            filename: page + '/' + (index === 0? 'index':page) + '.html',
             inject: true,
             chunks: [page],
             minify: {

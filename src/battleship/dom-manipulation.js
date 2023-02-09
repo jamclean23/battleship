@@ -27,8 +27,6 @@ function initialize () {
         
         // Add to DOM
         board.appendChild(newDiv);
-
-
     }
 
     function renderLetters (board) {
@@ -314,6 +312,7 @@ function getPreview (game) {
 
     // Get own rendered board for the player
     const ownRenderedBoards = document.querySelectorAll('.board.own');
+
     let ownRenderedBoard;
     ownRenderedBoards.forEach((renderedBoard) => {
         if (renderedBoard.player === player) {
@@ -346,8 +345,79 @@ function getPreview (game) {
     }
 }
 
+function splashscreen (game) {
+    return new Promise((resolve) => {
+        console.log('splashing');
+
+        // Overlay the screen with a modal
+        addModal(game);
+        // Get the ready button
+        const readyButton = document.querySelector('.modal .readyButton');
+        // Add eventlistener
+        readyButton.addEventListener('click', handleReadyClick);
+
+        function handleReadyClick () {
+            readyButton.removeEventListener('click', handleReadyClick);
+            removeModal();
+            resolve();
+        }
+    });
+
+    function addModal (game) {
+        // Create new modal
+        let newModal = document.createElement('div');
+
+        // Set css styling/class
+        newModal.classList.add('modal');
+
+        // Add to the dom
+        document.querySelector('body').appendChild(newModal);
+
+        // Add content
+        setupPlayerTransition(newModal, game);
+
+        function setupPlayerTransition (modal, game) {
+            
+            // Add info paragraph
+            let infoP = document.createElement('p');
+
+            // Add inner text
+            console.log(game);
+            infoP.innerText = game.findWhoseTurn().name + ' is next';
+
+            // set css styling/class
+            infoP.classList.add('modalMessage');
+
+            // Add to modal
+            modal.appendChild(infoP);
+
+
+            // make a ready button
+            let readyButton = document.createElement('button');
+
+            // Add inner text
+            readyButton.innerText = 'Ready!';
+
+            // Set css styling/class
+            readyButton.classList.add('readyButton');
+            readyButton.style.cssText = "font-size: 3vh";
+
+            // Add to modal
+            modal.appendChild(readyButton); 
+        }
+    }
+
+    function removeModal () {
+        // Get the modal
+        const modal = document.querySelector('.modal');
+        // Remove it
+        modal.remove();
+    }
+}
+
 export {
     initialize,
     updateBoards,
-    getPreview
+    getPreview,
+    splashscreen
 }
