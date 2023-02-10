@@ -345,17 +345,17 @@ function getPreview (game) {
     }
 }
 
-function splashscreen (game) {
+function splashscreen (game, message = '') {
     return new Promise((resolve) => {
         console.log('splashing');
 
         // Overlay the screen with a modal if there isn't an existing one
         const modal = document.querySelector('.modal');
         if (!modal) {
-            addModal(game);
+            addModal(game, message);
         } else {
             clearModal();
-            setupPlayerTransition(modal, game);
+            setupPlayerTransition(modal, game, message);
         }
         // Get the ready button
         const readyButton = document.querySelector('.modal .readyButton');
@@ -377,7 +377,7 @@ function splashscreen (game) {
         modal.innerHTML = '';
     }
 
-    function addModal (game) {
+    function addModal (game, message) {
         // Create new modal
         let newModal = document.createElement('div');
 
@@ -388,16 +388,16 @@ function splashscreen (game) {
         document.querySelector('body').appendChild(newModal);
 
         // Add content
-        setupPlayerTransition(newModal, game);
+        setupPlayerTransition(newModal, game, message);
     }
 
-    function setupPlayerTransition (modal, game) {
+    function setupPlayerTransition (modal, game, message) {
             
         // Add info paragraph
         let infoP = document.createElement('p');
 
         // Add inner text
-        infoP.innerText = game.findWhoseTurn().name + ' is next';
+        infoP.innerText = game.findWhoseTurn().name + ' is next' + '\n' + message;
 
         // set css styling/class
         infoP.classList.add('modalMessage');

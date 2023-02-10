@@ -45,6 +45,7 @@ function initialize (player1 = 'player', player2 = 'player') {
         for (let i = 0; i < this.boards.length; i++) {
             // Draw boards
             Dom.updateBoards(this);
+            Dom.splashscreen(this, 'Placement Phase');
 
             if (this.players[i].type === 'ai') {
                 this.Ai.populate(this.boards[i]);
