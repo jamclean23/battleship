@@ -349,8 +349,14 @@ function splashscreen (game) {
     return new Promise((resolve) => {
         console.log('splashing');
 
-        // Overlay the screen with a modal
-        addModal(game);
+        // Overlay the screen with a modal if there isn't an existing one
+        const modal = document.querySelector('.modal');
+        if (!modal) {
+            addModal(game);
+        } else {
+            clearModal();
+            setupPlayerTransition(modal, game);
+        }
         // Get the ready button
         const readyButton = document.querySelector('.modal .readyButton');
         // Add eventlistener
@@ -358,10 +364,18 @@ function splashscreen (game) {
 
         function handleReadyClick () {
             readyButton.removeEventListener('click', handleReadyClick);
-            removeModal();
+            if (game.findWhoseTurn().type === 'player') {
+                removeModal(game);
+            }
             resolve();
         }
     });
+
+    function clearModal () {
+        const modal = document.querySelector('.modal');
+        console.log(modal);
+        modal.innerHTML = '';
+    }
 
     function addModal (game) {
         // Create new modal
@@ -375,39 +389,38 @@ function splashscreen (game) {
 
         // Add content
         setupPlayerTransition(newModal, game);
-
-        function setupPlayerTransition (modal, game) {
-            
-            // Add info paragraph
-            let infoP = document.createElement('p');
-
-            // Add inner text
-            console.log(game);
-            infoP.innerText = game.findWhoseTurn().name + ' is next';
-
-            // set css styling/class
-            infoP.classList.add('modalMessage');
-
-            // Add to modal
-            modal.appendChild(infoP);
-
-
-            // make a ready button
-            let readyButton = document.createElement('button');
-
-            // Add inner text
-            readyButton.innerText = 'Ready!';
-
-            // Set css styling/class
-            readyButton.classList.add('readyButton');
-            readyButton.style.cssText = "font-size: 3vh";
-
-            // Add to modal
-            modal.appendChild(readyButton); 
-        }
     }
 
-    function removeModal () {
+    function setupPlayerTransition (modal, game) {
+            
+        // Add info paragraph
+        let infoP = document.createElement('p');
+
+        // Add inner text
+        infoP.innerText = game.findWhoseTurn().name + ' is next';
+
+        // set css styling/class
+        infoP.classList.add('modalMessage');
+
+        // Add to modal
+        modal.appendChild(infoP);
+
+
+        // make a ready button
+        let readyButton = document.createElement('button');
+
+        // Add inner text
+        readyButton.innerText = 'Ready!';
+
+        // Set css styling/class
+        readyButton.classList.add('readyButton');
+        readyButton.style.cssText = "font-size: 3vh";
+
+        // Add to modal
+        modal.appendChild(readyButton); 
+    }
+
+    function removeModal (game) {
         // Get the modal
         const modal = document.querySelector('.modal');
         // Remove it

@@ -280,6 +280,7 @@ describe('Game object:', () => {
 
     beforeEach(() => {
         newGame = Game.initialize('player', 'ai');
+        newGame.players[0].isTurn = true;
     });
 
     describe('Object Creation', () => {
@@ -302,6 +303,19 @@ describe('Game object:', () => {
     });
 
     describe('Methods:', () => {
+
+        describe('findWhoseTurn():', () => {
+            test('Finds whose turn succesfully', () => {
+                expect(newGame.findWhoseTurn()).toBe(newGame.players[0]);
+            });
+        });
+
+        describe('findWhoseNextTurn():', () => {
+            test('Finds whose turn is next succesfully', () => {
+                expect(newGame.findWhoseNextTurn()).toBe(newGame.players[1]);
+            });
+        })
+
         describe('testWinner():', () => {
             test('testWinner() determines a winner', () => {
                 // Check for winner when player's ships are sunk

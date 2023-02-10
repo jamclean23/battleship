@@ -327,12 +327,21 @@ function initialize (player1 = 'player', player2 = 'player') {
         };
     }
 
-    function findWhoseTurn (game) {
-        if (!game) game = this;
+    function findWhoseTurn (game = this) {
         let result = false;
         game.players.forEach((player) => {
             if (player.isTurn){
                 result = player;
+            }
+        });
+        return result;
+    }
+
+    function findWhoseNextTurn (game = this) {
+        let result = false;
+        game.players.forEach((player, index) => {
+            if (player.isTurn) {
+                result = game.players[1 - index];
             }
         });
         return result;
@@ -345,7 +354,8 @@ function initialize (player1 = 'player', player2 = 'player') {
         testWinner,
         mainLoop,
         phase: 'placement',
-        findWhoseTurn
+        findWhoseTurn,
+        findWhoseNextTurn
     };
 }
 
