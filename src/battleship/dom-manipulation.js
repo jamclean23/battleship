@@ -345,10 +345,12 @@ function getPreview (game) {
     }
 }
 
-function splashscreen (game, message = '') {
+
+async function splashscreen (game, mode, message = '') {
+    
     return new Promise((resolve) => {
         console.log('splashing');
-
+        
         // Overlay the screen with a modal if there isn't an existing one
         const modal = document.querySelector('.modal');
         if (!modal) {
@@ -361,7 +363,7 @@ function splashscreen (game, message = '') {
         const readyButton = document.querySelector('.modal .readyButton');
         // Add eventlistener
         readyButton.addEventListener('click', handleReadyClick);
-
+        
         function handleReadyClick () {
             readyButton.removeEventListener('click', handleReadyClick);
             if (game.findWhoseTurn().type === 'player') {
@@ -370,7 +372,7 @@ function splashscreen (game, message = '') {
             resolve();
         }
     });
-
+    
     function clearModal () {
         const modal = document.querySelector('.modal');
         console.log(modal);
@@ -386,13 +388,13 @@ function splashscreen (game, message = '') {
 
         // Add to the dom
         document.querySelector('body').appendChild(newModal);
-
+        
         // Add content
         setupPlayerTransition(newModal, game, message);
     }
-
+    
     function setupPlayerTransition (modal, game, message) {
-            
+        
         // Add info paragraph
         let infoP = document.createElement('p');
 
@@ -401,25 +403,25 @@ function splashscreen (game, message = '') {
 
         // set css styling/class
         infoP.classList.add('modalMessage');
-
+        
         // Add to modal
         modal.appendChild(infoP);
 
 
         // make a ready button
         let readyButton = document.createElement('button');
-
+        
         // Add inner text
         readyButton.innerText = 'Ready!';
-
+        
         // Set css styling/class
         readyButton.classList.add('readyButton');
         readyButton.style.cssText = "font-size: 3vh";
-
+        
         // Add to modal
         modal.appendChild(readyButton); 
     }
-
+    
     function removeModal (game) {
         // Get the modal
         const modal = document.querySelector('.modal');

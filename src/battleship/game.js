@@ -45,7 +45,7 @@ function initialize (player1 = 'player', player2 = 'player') {
         for (let i = 0; i < this.boards.length; i++) {
             // Draw boards
             Dom.updateBoards(this);
-            Dom.splashscreen(this, 'Placement Phase');
+            await Dom.splashscreen(this, 'transition', 'Placement Phase');
 
             if (this.players[i].type === 'ai') {
                 this.Ai.populate(this.boards[i]);
@@ -225,7 +225,7 @@ function initialize (player1 = 'player', player2 = 'player') {
             Dom.updateBoards(game);
 
             // Splash Screen
-            await Dom.splashscreen(game);
+            await Dom.splashscreen(game, 'transition');
 
             // log progress for testing
             console.log('player turn: ' + (player + 1));
@@ -245,12 +245,15 @@ function initialize (player1 = 'player', player2 = 'player') {
                 while (!coordinates) {
                     coordinates = await getAttack(game, player);
                 }
-
-
+                
+                
             }
-
+            
             // Render boards
             Dom.updateBoards(game);
+            
+            // Pause so the player can see what they chose
+            if (game.findWhoseTurn().type === 'player') await sleep();
 
             // Check for winner and return
             winner = game.testWinner();
@@ -326,6 +329,15 @@ function initialize (player1 = 'player', player2 = 'player') {
                 });
             } 
         };
+    }
+
+    function sleep ()
+     {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve();
+            }, 2000);
+        });
     }
 
     function findWhoseTurn (game = this) {
