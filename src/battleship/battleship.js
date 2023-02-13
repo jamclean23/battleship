@@ -18,8 +18,6 @@ async function playGame () {
     console.log(players);
 
     // Initialize Game 
-    players[0].type = 'ai';
-    players[1].type = 'ai';
     let newGame = Game.initialize(players[0], players[1]);
     Dom.initialize();
 

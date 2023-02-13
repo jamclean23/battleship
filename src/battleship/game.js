@@ -51,8 +51,8 @@ function initialize (player1, player2 ) {
             } else if (this.players[i].type === 'player') {
                 await playerPlaceLoop(this, this.boards[i], i);
                 players[i].show = 'myShips';
+                await sleep();
             }
-            await sleep();
             toggleTurns(this);
         }
         
