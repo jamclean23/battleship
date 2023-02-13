@@ -216,7 +216,7 @@ function initialize (player1, player2 ) {
 
         async function playRound (game, aiTimer) {
             let result = await takeTurns(aiTimer, game);
-            console.log(result.winner.name + ' has won in ' + result.turns + ' turns!');
+            Dom.winnerScreen(result);
         }
 
         async function takeTurns (aiTimer = 0, game, winner = false, turns = 0, player = 0) {

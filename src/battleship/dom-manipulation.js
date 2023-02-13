@@ -517,7 +517,7 @@ async function playerChoiceScreen () {
     }
 }
 
-async function splashscreen (game, mode, message = '') {
+function splashscreen (game, mode, message = '') {
     
     return new Promise((resolve) => {
         
@@ -587,6 +587,44 @@ async function splashscreen (game, mode, message = '') {
     }
 }
 
+function winnerScreen (result) {
+    let winner = result.winner.name;
+    let turns = result.turns;
+    return new Promise((resolve) => {    
+        // Create new modal
+        let modal = document.createElement('div');
+        // Give it a class
+        modal.classList.add('modal');
+        // Add to DOM
+        const body = document.querySelector('body');
+        body.appendChild(modal);
+
+        // Fill with content
+        // A p element that displays a message with who won
+        let p = document.createElement('p');
+        p.style.color = 'white';
+        p.innerText = winner + ' has won the battle!\nIn ' + turns + 'turns.' ;
+        modal.appendChild(p);
+        // A button to ask whether to play again
+        let button = document.createElement('button');
+        // Add a class
+        button.classList.add('readyButton');
+        button.innerText = 'Play Again?';
+        modal.appendChild(button);
+
+        // On button click, refresh the page
+        button.addEventListener('click', playAgain);
+
+        function playAgain () {
+            button.removeEventListener('click', playAgain);
+            resolve();
+            window.location.reload();
+        }
+
+
+    });
+}
+
 function removeModal () {
     // Get the modal
     const modal = document.querySelector('.modal');
@@ -605,5 +643,6 @@ export {
     getPreview,
     splashscreen,
     landingScreen,
-    playerChoiceScreen
+    playerChoiceScreen,
+    winnerScreen
 }
