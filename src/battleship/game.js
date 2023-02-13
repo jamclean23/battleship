@@ -53,8 +53,8 @@ function initialize (player1 = 'player', player2 = 'player') {
                 await playerPlaceLoop(this, this.boards[i], i);
                 players[i].show = 'myShips';
             }
-            toggleTurns(this);
             await sleep();
+            toggleTurns(this);
         }
         
         // Draw boards

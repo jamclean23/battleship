@@ -398,12 +398,6 @@ async function splashscreen (game, mode, message = '') {
             resolve();
         }
     });
-    
-    function clearModal () {
-        const modal = document.querySelector('.modal');
-        console.log(modal);
-        modal.innerHTML = '';
-    }
 
     function addModal (game, message) {
         // Create new modal
@@ -447,13 +441,19 @@ async function splashscreen (game, mode, message = '') {
         // Add to modal
         modal.appendChild(readyButton); 
     }
-    
-    function removeModal (game) {
-        // Get the modal
-        const modal = document.querySelector('.modal');
-        // Remove it
-        modal.remove();
-    }
+}
+
+function removeModal () {
+    // Get the modal
+    const modal = document.querySelector('.modal');
+    // Remove it
+    modal.remove();
+}
+
+function clearModal () {
+    const modal = document.querySelector('.modal');
+    console.log(modal);
+    modal.innerHTML = '';
 }
 
 export {
@@ -461,5 +461,6 @@ export {
     updateBoards,
     getPreview,
     splashscreen,
-    landingScreen
+    landingScreen,
+    // playerChoiceScreen
 }
