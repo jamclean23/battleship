@@ -351,7 +351,7 @@ async function landingScreen () {
         addLandingModal();
         // Wait for three seconds and then clear
         setTimeout(() => {
-            resolve();
+            resolve(clearModal());
         }, 4000);
     });
 
@@ -372,10 +372,130 @@ async function landingScreen () {
     }
 }
 
+async function playerChoiceScreen () {
+    return new Promise((resolve) => {
+
+        // Overlay the screen with a modal if there isn't an existing one
+        const modal = document.querySelector('.modal');
+        if (!modal) addChoiceModal();
+
+        // Add a class
+        modal.classList.add('playerChoiceModal');
+
+        // Fill with content for making player choices
+        for (let i = 0; i < 4; i++) {
+            let newDiv = document.createElement('div');
+            switch (i) {
+                case 0:
+                    newDiv.innerText = 'BATTLEBOATS';
+                    newDiv.style.color = 'white';
+                    break;
+                case 1:
+                    createPlayerInputBox(1);
+                    break;
+                case 2:
+                    createPlayerInputBox(2);
+                    break;
+                case 3:
+                    // Create button
+                    let button = document.createElement('button');
+
+                    // Class
+                    button.classList.add('readyButton');
+
+                    // Content
+                    button.innerText = 'Ready';
+
+                    // Add to DOM
+                    newDiv.appendChild(button);
+            }
+
+            function createPlayerInputBox (playerNumber) {
+                // Nameplate
+                let playerP = document.createElement('p');
+                playerP.innerText = 'Player ' + playerNumber;
+                playerP.style.color = 'white';
+                newDiv.appendChild(playerP);
+
+                // Text input for naming
+                let input = document.createElement('input');
+                input.setAttribute('type', 'text');
+                input.id = 'player'+ playerNumber + 'Name';
+                input.value = 'Player ' + playerNumber;
+                newDiv.appendChild(input);
+
+                // Label for input box
+                let label = document.createElement('label');
+                label.setAttribute('for', 'player' + playerNumber + 'Name');
+                label.style.color = 'white';
+                label.innerText = 'Name:';
+                newDiv.insertBefore(label, input);
+
+                // Add option for selecting player type if player 2
+                if (playerNumber === 2) {
+                    let select = document.createElement('select');
+                    select.id = 'player2type';
+
+                    // Add to DOM
+                    newDiv.appendChild(select);
+
+                    // Add options
+                    for (i = 0; i < 2; i++) {
+                        let option = document.createElement('option');
+                        switch (i) {
+                            case 0:
+                                option.setAttribute('value', 'player');
+                                option.innerText = 'player';
+                                break;
+                            case 1:
+                                option.setAttribute('value', 'ai');
+                                option.innerText = 'ai';
+                        }
+                        select.appendChild(option);
+                    }
+                }
+            }
+            // Add to DOM
+            modal.appendChild(newDiv);
+            
+        }
+
+        // Resolve on button click
+        const readyButton = document.querySelector('.readyButton');
+
+        readyButton.addEventListener('click', handleReadyClick);
+
+        function handleReadyClick () {
+            readyButton.removeEventListener('click', handleReadyClick);
+
+            resolve([
+                {
+                    name: document.querySelector('#player1Name').value,
+                    type: 'player'
+                },
+                {
+                    name: document.querySelector('#player2Name').value,
+                    type: document.querySelector('#player2type').value
+                }
+            ]);
+            clearModal();
+        }
+    });
+
+    function addChoiceModal () {
+        // Create a new modal
+        let newModal = document.createElement('div');
+        // Add a class
+        newModal.classList.add('modal');
+        // Add to the DOM
+        const body = document.querySelector('body');
+        body.appendChild(newModal);
+    }
+}
+
 async function splashscreen (game, mode, message = '') {
     
     return new Promise((resolve) => {
-        console.log('splashing');
         
         // Overlay the screen with a modal if there isn't an existing one
         const modal = document.querySelector('.modal');
@@ -452,7 +572,6 @@ function removeModal () {
 
 function clearModal () {
     const modal = document.querySelector('.modal');
-    console.log(modal);
     modal.innerHTML = '';
 }
 
@@ -462,5 +581,5 @@ export {
     getPreview,
     splashscreen,
     landingScreen,
-    // playerChoiceScreen
+    playerChoiceScreen
 }

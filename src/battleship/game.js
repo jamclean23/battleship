@@ -4,7 +4,7 @@ import * as Ai from './ai.js';
 import * as Dom from './dom-manipulation.js';
 
 
-function initialize (player1 = 'player', player2 = 'player') {
+function initialize (player1, player2 ) {
 
     // Initialize game boards
     const boards = [];
@@ -14,13 +14,18 @@ function initialize (player1 = 'player', player2 = 'player') {
     }
 
     // Initialize players
-    const playerTypes = [player1, player2];
+    const playerTypes = [player1.type, player2.type];
     const players = [];
 
     playerTypes.forEach((player, index) => {
         let newPlayer = Player.createPlayer(player);
         newPlayer.board = boards[index];
         players.push(newPlayer);
+    });
+
+    // Name players
+    players.forEach((player, index) => {
+        player.name = index === 0? player1.name : player2.name;
     });
 
     // Main game loop
@@ -32,12 +37,6 @@ function initialize (player1 = 'player', player2 = 'player') {
 
         // Initialize arrow keys
         setupListeners(this);
-
-        // Name players
-        this.players.forEach((player, index) => {
-            player.name = player.name + ' #' + (index + 1);
-        });
-        
         
         // Populate game boards
         console.log('Placement Phase');

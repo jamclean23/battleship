@@ -12,10 +12,13 @@ async function playGame () {
 
     // Landing Screen
     await Dom.landingScreen();
+
     // Choose players
+    const players = await Dom.playerChoiceScreen();
+    console.log(players);
 
     // Initialize Game 
-    let newGame = Game.initialize('player', 'player');
+    let newGame = Game.initialize(players[0], players[1]);
     Dom.initialize();
 
     // Loop
