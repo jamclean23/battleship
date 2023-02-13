@@ -28,6 +28,11 @@ button {
     justify-content: center;
     align-items: center;
 }
+
+input {
+    background-color: white;
+}
+
 #playerIdent {
     font-size: 4vh;
 }
