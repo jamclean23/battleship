@@ -9,7 +9,6 @@ import * as Dom from './dom-manipulation.js'
 playGame();
 
 async function playGame () {
-
     // Landing Screen
     await Dom.landingScreen();
 

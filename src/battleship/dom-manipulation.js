@@ -603,7 +603,9 @@ function winnerScreen (result) {
         // A p element that displays a message with who won
         let p = document.createElement('p');
         p.style.color = 'white';
-        p.innerText = winner + ' has won the battle!\nIn ' + turns + 'turns.' ;
+        p.style.textAlign = 'center';
+        p.style.marginBottom = '5vh';
+        p.innerText = winner + ' has won the battle!\nIn ' + turns + ' turns' ;
         modal.appendChild(p);
         // A button to ask whether to play again
         let button = document.createElement('button');
