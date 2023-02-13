@@ -417,27 +417,49 @@ async function playerChoiceScreen () {
                 playerP.style.color = 'white';
                 newDiv.appendChild(playerP);
 
+                // Div to hold text input and label
+                let inputDiv = document.createElement('div');
+                // Add class
+                inputDiv.classList.add('inputDiv');
+                // Add to DOM
+                newDiv.appendChild(inputDiv);
+
                 // Text input for naming
                 let input = document.createElement('input');
                 input.setAttribute('type', 'text');
                 input.id = 'player'+ playerNumber + 'Name';
                 input.value = 'Player ' + playerNumber;
-                newDiv.appendChild(input);
+                inputDiv.appendChild(input);
 
                 // Label for input box
                 let label = document.createElement('label');
                 label.setAttribute('for', 'player' + playerNumber + 'Name');
                 label.style.color = 'white';
                 label.innerText = 'Name:';
-                newDiv.insertBefore(label, input);
+                inputDiv.insertBefore(label, input);
 
                 // Add option for selecting player type if player 2
                 if (playerNumber === 2) {
+
+                    // Create div to hold select and label
+                    let selectDiv = document.createElement('div');
+                    // Add Class
+                    selectDiv.classList.add('selectDiv');
+                    // Add to DOM
+                    newDiv.appendChild(selectDiv);
+                    
+                    // Create label
+                    let label = document.createElement('label');
+                    label.innerText = 'Type:';
+                    label.setAttribute('for', 'player2type');
+                    selectDiv.appendChild(label);
+
+                    // Create select element
                     let select = document.createElement('select');
                     select.id = 'player2type';
-
                     // Add to DOM
-                    newDiv.appendChild(select);
+                    selectDiv.appendChild(select);
+
 
                     // Add options
                     for (i = 0; i < 2; i++) {
@@ -479,6 +501,8 @@ async function playerChoiceScreen () {
                 }
             ]);
             clearModal();
+            const modal = document.querySelector('.modal');
+            modal.classList.remove('playerChoiceModal');
         }
     });
 
