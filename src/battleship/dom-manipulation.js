@@ -345,6 +345,32 @@ function getPreview (game) {
     }
 }
 
+async function landingScreen () {
+    return new Promise((resolve) => {
+        // Add landing screen to the DOM
+        addLandingModal();
+        // Wait for three seconds and then clear
+        setTimeout(() => {
+            resolve();
+        }, 4000);
+    });
+
+    function addLandingModal (message = 'BATTLEBOATS') {
+        // Create new modal
+        let newModal = document.createElement('div');
+        // Give it the modal class
+        newModal.classList.add('modal');
+        // Add content
+        let newP = document.createElement('p');
+        newP.innerText = message;
+        newP.style.color = 'white';
+        newP.style.fontSize = '12vw';
+        newModal.appendChild(newP);
+        // Add to the DOM
+        const body = document.querySelector('body');
+        body.appendChild(newModal);
+    }
+}
 
 async function splashscreen (game, mode, message = '') {
     
@@ -434,5 +460,6 @@ export {
     initialize,
     updateBoards,
     getPreview,
-    splashscreen
+    splashscreen,
+    landingScreen
 }

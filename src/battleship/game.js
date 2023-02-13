@@ -54,6 +54,7 @@ function initialize (player1 = 'player', player2 = 'player') {
                 players[i].show = 'myShips';
             }
             toggleTurns(this);
+            await sleep();
         }
         
         // Draw boards

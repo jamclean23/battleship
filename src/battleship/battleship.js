@@ -6,17 +6,22 @@ import * as Dom from './dom-manipulation.js'
 
 
 
-// Landing Screen
+playGame();
 
-// Choose players
+async function playGame () {
 
-// Initialize Game 
-let newGame = Game.initialize('player', 'player');
-Dom.initialize();
+    // Landing Screen
+    await Dom.landingScreen();
+    // Choose players
 
-// Loop
-newGame.mainLoop();
+    // Initialize Game 
+    let newGame = Game.initialize('player', 'player');
+    Dom.initialize();
 
+    // Loop
+    newGame.mainLoop();
+
+}
 
 export {
 }
