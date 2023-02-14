@@ -8,3 +8,4 @@ TO DO---------------------
 -Legend for different ship types.
 -Commit button turn green when valid placement, red when not. Or preview/selected squares change color.
   Will need a separate function to check for placement validity before committing placement.
+-Improve Ai.
